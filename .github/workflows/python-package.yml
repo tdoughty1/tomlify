@@ -16,9 +16,7 @@ jobs:
           version: "0.6.17"
       - run: uv --version
       - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version-file: ".python-version"
+        run: uv install python
       - run: uv run python --version
       - name: Install the project
         run: uv sync --locked --all-extras --dev
