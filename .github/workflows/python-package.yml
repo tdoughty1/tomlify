@@ -16,7 +16,7 @@ jobs:
           version: "0.6.17"
       - run: uv --version
       - name: Set up Python
-        run: uv install python
+        run: uv python install
       - run: uv run python --version
       - name: Install the project
         run: uv sync --locked --all-extras --dev
