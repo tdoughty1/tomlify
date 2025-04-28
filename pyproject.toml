@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Todd Doughty", email = "w.todd.doughty@gmail.com" }
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = []
 
 [build-system]
@@ -15,5 +15,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "mypy>=1.14.1",
     "pytest>=7.4.4",
+    "ruff>=0.11.7",
 ]

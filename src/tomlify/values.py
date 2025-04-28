@@ -1,6 +1,9 @@
+from abc import ABC
 import datetime
 
-class Value:
+class Value(ABC):
+
+    _raw: str
 
     def __str__(self) -> str:
         return self._raw

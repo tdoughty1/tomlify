@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta, timezone
 import re
 
 from .values import LocalDate, LocalDateTime, LocalTime, DateTime
@@ -23,11 +23,17 @@ RFC_3339_DATE_STR_PATTERN = re.compile(RFC_3339_DATE_STR)
 RFC_3339_TIME_STR_PATTERN = re.compile(RFC_3339_TIME_STR)
 RFC_3339_DATETIME_STR_PATTERN = re.compile(RFC_3339_DATETIME_STR)
 
-def parse_date_time(date_time_str: str) -> datetime:
+TimeConfig = dict[str, int|str|timezone|None]
+TimeObject = LocalDate|LocalTime|LocalDateTime|DateTime
+
+
+def parse_date_time(date_time_str: str) -> TimeObject:
+
+    kwargs: TimeConfig = dict()
+
     matches = re.match(RFC_3339_DATETIME_STR_PATTERN, date_time_str)
     if matches:
 
-        kwargs = {}
         try:
             kwargs['year'] = int(matches.group(1))
             kwargs['month'] = int(matches.group(2))
@@ -66,8 +72,6 @@ def parse_date_time(date_time_str: str) -> datetime:
     if matches:
         year, month, day = matches.groups()
 
-        kwargs = {}
-
         try:
             kwargs['year'] = int(year)
             kwargs['month'] = int(month)
@@ -81,8 +85,6 @@ def parse_date_time(date_time_str: str) -> datetime:
     matches = re.match(RFC_3339_TIME_STR_PATTERN, date_time_str)
     if matches:
         hour, minute, second, microsecond = matches.groups()
-
-        kwargs = {}
 
         try:
             kwargs['hour'] = int(hour)

@@ -153,7 +153,7 @@ def test_octal_long():
     assert actual_output._type == 'oct'
 
 
-def test_octal_long():
+def test_octal_short():
     input_integer_string = "0o755"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0o755
