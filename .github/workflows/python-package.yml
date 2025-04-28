@@ -15,12 +15,17 @@ jobs:
         with:
           version: "0.6.17"
       - run: uv --version
+      - name: Install Just 
+        uses: extractions/setup-just@v3
+      - run: just --version
       - name: Set up Python
         run: uv python install
       - run: uv run python --version
       - name: Install the project
         run: uv sync --locked --all-extras --dev
-      - name: Run tests
-        run: uv run pytest tests
-      
-
+      - name: Run Unit tests
+        run: just test 
+      - name: Lint the project
+        run: just lint
+      - name: Typecheck the project
+        run: just typecheck
