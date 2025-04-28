@@ -3,7 +3,6 @@ import re
 
 from .values import LocalDate, LocalDateTime, LocalTime, DateTime
 
-
 SECONDS_PER_HOUR = 3600
 SECONDS_PER_MINUTE = 60
 

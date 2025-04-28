@@ -69,54 +69,54 @@ apos15 = "Here are fifteen apostrophes: '''''''''''''''"
 str = "''''That,' she said, 'is still pointless.''''"
 
 
-def test_valid_integer_positive():
+def test_valid_integer_positive() -> None:
     input_integer_string = "+99"
     actual_output = Integer(input_integer_string)
     assert actual_output == 99
     assert actual_output._raw == input_integer_string
 
 
-def test_valid_integer_no_sign():
+def test_valid_integer_no_sign() -> None:
     input_integer_string = "42"
     actual_output = Integer(input_integer_string)
     assert actual_output == 42
     assert actual_output._raw == input_integer_string 
 
-def test_valid_integer_zero():
+def test_valid_integer_zero() -> None:
     input_integer_string = "0"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0
     assert actual_output._raw == input_integer_string
 
-def test_valid_integer_negative():
+def test_valid_integer_negative() -> None:
     input_integer_string = "-17"
     actual_output = Integer(input_integer_string)
     assert actual_output == -17
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'int'
 
-def test_valid_integer_one_underscore():
+def test_valid_integer_one_underscore() -> None:
     input_integer_string = "1_000"
     actual_output = Integer(input_integer_string)
     assert actual_output == 1_000
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'int'
 
-def test_valid_integer_two_underscore():
+def test_valid_integer_two_underscore() -> None:
     input_integer_string = "5_349_221"
     actual_output = Integer(input_integer_string)
     assert actual_output == 5349221
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'int'
 
-def test_valid_integer_indian_grouping():
+def test_valid_integer_indian_grouping() -> None:
     input_integer_string = "53_49_221"
     actual_output = Integer(input_integer_string)
     assert actual_output == 5349221
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'int'
 
-def test_valid_integer_three_many_underscore():
+def test_valid_integer_three_many_underscore() -> None:
     input_integer_string = "1_2_3_4_5"
     actual_output = Integer(input_integer_string)
     assert actual_output == 12345
@@ -124,28 +124,28 @@ def test_valid_integer_three_many_underscore():
     assert actual_output._type == 'int'
 
 
-def test_hexidecimal_capital():
+def test_hexidecimal_capital() -> None:
     input_integer_string = "0xDEADBEEF"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0xDEADBEEF
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'hex'
 
-def test_hexidecimal_lower():
+def test_hexidecimal_lower() -> None:
     input_integer_string = "0xdeadbeef"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0xdeadbeef
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'hex'
 
-def test_hexidecimal_lower_with_underscore():
+def test_hexidecimal_lower_with_underscore() -> None:
     input_integer_string = "0xdead_beef"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0xdead_beef
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'hex'
 
-def test_octal_long():
+def test_octal_long() -> None:
     input_integer_string = "0o01234567"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0o01234567
@@ -153,134 +153,134 @@ def test_octal_long():
     assert actual_output._type == 'oct'
 
 
-def test_octal_short():
+def test_octal_short() -> None:
     input_integer_string = "0o755"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0o755
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'oct'
 
-def test_binary():
+def test_binary() -> None:
     input_integer_string = "0b11010110"
     actual_output = Integer(input_integer_string)
     assert actual_output == 0b11010110
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'bin'
 
-def test_valid_float_fraction_positive():
+def test_valid_float_fraction_positive() -> None:
     input_float_string = "+1.0"
     actual_output = Float(input_float_string)
     assert actual_output == 1.0
     assert actual_output._raw == input_float_string
 
-def test_valid_float_fraction_no_sign():
+def test_valid_float_fraction_no_sign() -> None:
     input_float_string = "3.1415"
     actual_output = Float(input_float_string)
     assert actual_output == 3.1415
     assert actual_output._raw == input_float_string
 
-def test_valid_float_fraction_negative():
+def test_valid_float_fraction_negative() -> None:
     input_float_string = "-0.01"
     actual_output = Float(input_float_string)
     assert actual_output == -0.01
     assert actual_output._raw == input_float_string
 
-def test_valid_float_post_exponent_plus():
+def test_valid_float_post_exponent_plus() -> None:
     input_float_string = "5e+22"
     actual_output = Float(input_float_string)
     assert actual_output == 5e+22
     assert actual_output._raw == input_float_string
 
-def test_valid_float_post_exponent_no_sign():
+def test_valid_float_post_exponent_no_sign() -> None:
     input_float_string = "1e06" 
     actual_output = Float(input_float_string)
     assert actual_output == 1e06
     assert actual_output._raw == input_float_string
 
-def test_valid_float_post_exponent_minus():
+def test_valid_float_post_exponent_minus() -> None:
     input_float_string = "-2E-2"
     actual_output = Float(input_float_string)
     assert actual_output == -2E-2
     assert actual_output._raw == input_float_string
 
-def test_valid_float_fractional_exponent():
+def test_valid_float_fractional_exponent() -> None:
     input_float_string = "6.626e-34"
     actual_output = Float(input_float_string)
     assert actual_output == 6.626e-34
     assert actual_output._raw == input_float_string
 
 
-def test_invalid_float_no_leading_digit():
+def test_invalid_float_no_leading_digit() -> None:
     input_float_string = ".7"
     with pytest.raises(ValueError):
         Float(input_float_string)
 
 
-def test_invalid_float_no_trailing_digit():
+def test_invalid_float_no_trailing_digit() -> None:
     input_float_string = "7."
     with pytest.raises(ValueError):
         Float(input_float_string) 
 
-def test_invalid_float_no_trailing_digit_before_exponent():
+def test_invalid_float_no_trailing_digit_before_exponent() -> None:
     input_float_string = "3.e+20"
     with pytest.raises(ValueError):
         Float(input_float_string)
 
-def test_valid_float_underscore():
+def test_valid_float_underscore() -> None:
     input_float_string = "224_617.445_991_228"
     actual_output = Float(input_float_string)
     assert actual_output == 224617.445991228
     assert actual_output._raw == input_float_string
 
-def test_valid_float_inf():
+def test_valid_float_inf() -> None:
     input_float_string = "inf"
     actual_output = Float(input_float_string)
     assert math.isinf(actual_output) and actual_output > 0
     assert actual_output._raw == input_float_string
 
-def test_valid_float_neg_inf():
+def test_valid_float_neg_inf() -> None:
     input_float_string = "-inf"
     actual_output = Float(input_float_string)
     assert math.isinf(actual_output) and actual_output < 0
     assert actual_output._raw == input_float_string
 
-def test_valid_float_pos_inf():
+def test_valid_float_pos_inf() -> None:
     input_float_string = "+inf"
     actual_output = Float(input_float_string)
     assert math.isinf(actual_output) and actual_output > 0  
     assert actual_output._raw == input_float_string
 
-def test_valid_float_nan():
+def test_valid_float_nan() -> None:
     input_float_string = "nan"
     actual_output = Float(input_float_string)
     assert math.isnan(actual_output)
     assert actual_output._raw == input_float_string
 
-def test_valid_float_neg_nan():
+def test_valid_float_neg_nan() -> None:
     input_float_string = "-nan"
     actual_output = Float(input_float_string)
     assert math.isnan(actual_output)
     assert actual_output._raw == input_float_string
 
-def test_valid_float_pos_nan():
+def test_valid_float_pos_nan() -> None:
     input_float_string = "+nan"
     actual_output = Float(input_float_string)
     assert math.isnan(actual_output)
     assert actual_output._raw == input_float_string
 
-def test_valid_boolean_true():
+def test_valid_boolean_true() -> None:
     input_boolean_string = "true"
     actual_output = Boolean(input_boolean_string)
     assert actual_output
     assert actual_output._raw == input_boolean_string
 
-def test_valid_boolean_false():
+def test_valid_boolean_false() -> None:
     input_boolean_string = "false"
     actual_output = Boolean(input_boolean_string)
     assert not actual_output
     assert actual_output._raw == input_boolean_string
 
-def test_invalid_boolean():
+def test_invalid_boolean() -> None:
     input_boolean_string = "invalid"
     with pytest.raises(ValueError):
         Boolean(input_boolean_string)
@@ -296,7 +296,7 @@ DATE_TEST_PARAMS = {
 }
 
 
-def test_valid_datetime_with_Z():
+def test_valid_datetime_with_Z() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy() 
     input_date_time_string = "1979-05-27T07:32:00Z"
     input_kwargs['tzinfo'] = timezone.utc
@@ -306,7 +306,7 @@ def test_valid_datetime_with_Z():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_datetime_offset():
+def test_valid_datetime_offset() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy() 
     input_date_time_string = "1979-05-27T07:32:00-07:00"
     input_kwargs['tzinfo'] = timezone(timedelta(days=-1, seconds=61200), '-07:00')
@@ -316,7 +316,7 @@ def test_valid_datetime_offset():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_datetime_offset_microseconds():
+def test_valid_datetime_offset_microseconds() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy() 
     input_date_time_string = "1979-05-27T07:32:00.999999-07:00"
     input_kwargs['tzinfo'] = timezone(timedelta(days=-1, seconds=61200), '-07:00')
@@ -327,7 +327,7 @@ def test_valid_datetime_offset_microseconds():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_datetime_space():
+def test_valid_datetime_space() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy() 
     input_date_time_string = "1979-05-27 07:32:00Z"
     input_kwargs['tzinfo'] = timezone.utc
@@ -337,7 +337,7 @@ def test_valid_datetime_space():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_local_datetime():
+def test_valid_local_datetime() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy()
     input_date_time_string = "1979-05-27T07:32:00" 
     input_kwargs['tzinfo'] = timezone.utc
@@ -347,7 +347,7 @@ def test_valid_local_datetime():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_local_datetime_microseconds():
+def test_valid_local_datetime_microseconds() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy()
     input_date_time_string = "1979-05-27T07:32:00.999999"
     input_kwargs['microsecond'] = 999999
@@ -358,21 +358,21 @@ def test_valid_local_datetime_microseconds():
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_local_date():
+def test_valid_local_date() -> None:
     input_date_string = "1979-05-27"
     actual_output = parse_date_time(input_date_string)
     expected_output = LocalDate(year=1979, month=5, day=27, raw=input_date_string)
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_local_time():
+def test_valid_local_time() -> None:
     input_time_string = "07:32:00"
     actual_output = parse_date_time(input_time_string)
     expected_output = LocalTime(hour=7, minute=32, second=0, raw=input_time_string)
     assert actual_output == expected_output
     assert actual_output._raw == expected_output._raw
 
-def test_valid_local_time_microseconds():
+def test_valid_local_time_microseconds() -> None:
     input_time_string = "00:32:00.999999"
     actual_output = parse_date_time(input_time_string)
     expected_output = LocalTime(hour=0, minute=32, second=0, microsecond=999999, raw=input_time_string)

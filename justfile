@@ -5,4 +5,4 @@ lint:
     uv run ruff check src tests
 
 typecheck:
-    uv run mypy src tests
+    uv run mypy src --disallow-untyped-calls --disallow-untyped-defs
