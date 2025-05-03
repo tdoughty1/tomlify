@@ -1,0 +1,41 @@
+class BaseLexer:
+
+    def __init__(self, source: str) -> None:
+        self._source: str = source
+        self._tokens: list[str] = []
+        self._start: int = 0
+        self._current: int = 0
+        self._line: int = 1
+
+    def _match(self, expected: str) -> bool:
+        if self._isAtEOF():
+            return False
+        if self._source[self._current] != expected:
+            return False
+        self._current += 1
+        return True
+
+    def _isAtEOF(self, num = 0) -> bool:    
+        return self._current + num >= len(self._source)
+    
+    def _isAtEOL(self, num = 0) -> bool:
+        return self._source[self._current + num] == '\n'
+
+    def _advance(self, num = 1) -> str:
+        if self._isAtEOF():
+            raise ValueError("Attempting to advance past end of file.")
+        source = self._source[self._current]
+        self._current += num
+
+    def _peek(self, num = 0) -> str:
+        if self._isAtEOF() or self._current + num >= len(self._source):
+            return '\0'
+        return self._source[self._current + num]
+
+    def _match(self, expected: str) -> bool:
+        if self._isAtEOF():
+            return False
+        if self._source[self._current] != expected:
+            return False
+        self._current += 1
+        return True

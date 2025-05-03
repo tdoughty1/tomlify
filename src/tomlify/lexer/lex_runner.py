@@ -1,6 +1,6 @@
 import sys
 
-from tomlify.lexer.scanner import Scanner
+from tomlify.lexer.base_lexer import Scanner
 
 
 
