@@ -1,6 +1,7 @@
 from tomlify.lexer.token import Literal, Token
 from tomlify.lexer.token_type import TokenType
 
+
 class BaseLexer:
 
     def __init__(self, source: str, start_line: int = 1) -> None:
@@ -24,7 +25,7 @@ class BaseLexer:
 
     def _isAtEOF(self, num: int = 0) -> bool:
         return self._current + num >= len(self._source)
-    
+
     def _isAtEOL(self, num: int = 0) -> bool:
         return self._source[self._current + num] == '\n'
 

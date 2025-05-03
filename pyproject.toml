@@ -22,3 +22,6 @@ dev = [
 
 [tool.ruff]
 exclude = [".venv"]
+
+[tool.ruff.lint]
+ignore = ["D102"]

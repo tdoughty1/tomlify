@@ -1,16 +1,16 @@
-from datetime import timedelta, timezone
 import re
+from datetime import timedelta, timezone
 
 from .values import (
-    BasicString, 
-    DateTime, 
-    LocalDate, 
-    LocalDateTime, 
-    LiteralString, 
-    LocalTime, 
-    MultilineBasicString, 
+    BasicString,
+    DateTime,
+    LiteralString,
+    LocalDate,
+    LocalDateTime,
+    LocalTime,
+    MultilineBasicString,
     MultilineLiteralString,
-    ValueString
+    ValueString,
 )
 
 SECONDS_PER_HOUR = 3600
@@ -52,7 +52,7 @@ def parse_date_time(date_time_str: str) -> TimeObject:
             kwargs['second'] = int(matches.group(6))
             kwargs['microsecond'] = int(matches.group(7)[1:]) if matches.group(7) else 0
             kwargs['raw'] = date_time_str
-        except TypeError: 
+        except TypeError:
             raise ValueError(f"Invalid date input: {date_time_str}")
 
         z_char = matches.group(8)
@@ -61,7 +61,7 @@ def parse_date_time(date_time_str: str) -> TimeObject:
         minute_offset = int(matches.group(11)) if matches.group(11) else 0
 
         if z_char or tz_sign or hour_offset or minute_offset:
-            
+
             offset_seconds = hour_offset * SECONDS_PER_HOUR + minute_offset * SECONDS_PER_MINUTE
             offset = timedelta(seconds=offset_seconds)
             if tz_sign == "-":
@@ -70,13 +70,12 @@ def parse_date_time(date_time_str: str) -> TimeObject:
                 kwargs["tzinfo"] = timezone.utc
             else:
                 kwargs["tzinfo"] = timezone(offset, f"{tz_sign}{hour_offset:02d}:{minute_offset:02d}")
-            
+
             return DateTime(**kwargs)
-        else:
-            kwargs["tzinfo"] = None
-            return LocalDateTime(**kwargs)
-        
-    
+        kwargs["tzinfo"] = None
+        return LocalDateTime(**kwargs)
+
+
     matches = re.match(RFC_3339_DATE_STR_PATTERN, date_time_str)
     if matches:
         year, month, day = matches.groups()
@@ -86,9 +85,9 @@ def parse_date_time(date_time_str: str) -> TimeObject:
             kwargs['month'] = int(month)
             kwargs['day'] = int(day)
             kwargs['raw'] = date_time_str
-        except TypeError: 
+        except TypeError:
             raise ValueError(f"Invalid date input: {date_time_str}")
-        
+
         return LocalDate(**kwargs)
 
     matches = re.match(RFC_3339_TIME_STR_PATTERN, date_time_str)
@@ -103,7 +102,7 @@ def parse_date_time(date_time_str: str) -> TimeObject:
             kwargs['raw'] = date_time_str
         except TypeError:
             raise ValueError(f"Invalid date time input: {date_time_str}")
-        
+
         return LocalTime(**kwargs)
 
     raise ValueError(f"Invalid date time input: {date_time_str}")
@@ -113,12 +112,11 @@ def parse_date_time(date_time_str: str) -> TimeObject:
 def parse_string(raw_string: str) -> ValueString:
     if raw_string.startswith('"""'):
         return MultilineBasicString(raw_string)
-    elif raw_string.startswith("'''"):
+    if raw_string.startswith("'''"):
         return MultilineLiteralString(raw_string)
-    elif raw_string.startswith("'"):
+    if raw_string.startswith("'"):
         return LiteralString(raw_string)
-    elif raw_string.startswith('"'):
+    if raw_string.startswith('"'):
         return BasicString(raw_string)
-    else:
-        raise ValueError("Unknown string format")
-    
+    raise ValueError("Unknown string format")
+

@@ -5,7 +5,7 @@ from tomlify.lexer.token_type import TokenType
 Literal = str | int | float
 
 @dataclass
-class Token():   
+class Token:
     type_: TokenType
     lexeme: str
     literal: Literal | None

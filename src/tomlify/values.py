@@ -1,8 +1,9 @@
 from __future__ import annotations
-from abc import ABC
+
 import datetime
-from typing import Any
 import re
+from abc import ABC
+from typing import Any
 
 
 def startw_with_newline(s: str) -> bool:
@@ -28,7 +29,7 @@ class Integer(int, Value):
 
         if value.startswith("0x"):
             obj = int.__new__(cls, value, 16)
-            obj._type = "hex"  # 
+            obj._type = "hex"
         elif value.startswith("0b"):
             obj = int.__new__(cls, value, 2)
             obj._type = "bin"
@@ -38,7 +39,7 @@ class Integer(int, Value):
         else:
             obj = int.__new__(cls, value)
             obj._type = "int"
-        
+
         obj._raw = value
         return obj
 
@@ -65,7 +66,7 @@ class MultilineBasicString(ValueString):
         print(value)
         string = super().__new__(cls, value)
         string._raw = raw_value
-        return string 
+        return string
 
 class LiteralString(ValueString):
     def __new__(cls, value: str) -> LiteralString:
@@ -94,12 +95,12 @@ class Float(float, Value):
 
     def __init__(self, value: str):
         if '.' in value:
-            mantissa, exponent = value.split('.') 
+            mantissa, exponent = value.split('.')
             if len(mantissa) == 0 or len(exponent) == 0:
                 raise ValueError("Invalid floating point input")
             if not mantissa[-1].isdigit() or not exponent[0].isdigit():
                 raise ValueError("Invalid floating point input")
-            
+
         self._raw = value
 
     def __str__(self) -> str:

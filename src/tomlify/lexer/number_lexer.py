@@ -2,8 +2,9 @@ from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.token import Literal
 from tomlify.lexer.token_type import TokenType
 
+
 class NumberLexer(BaseLexer):
-    def lex(self) -> tuple[int, int]: 
+    def lex(self) -> tuple[int, int]:
 
         is_integer = True
         is_hex_base = False
@@ -19,7 +20,7 @@ class NumberLexer(BaseLexer):
         num = 0
         while True:
             if num > 20:
-                break 
+                break
             num += 1
 
             # Found base
@@ -79,14 +80,14 @@ class NumberLexer(BaseLexer):
             if self._isAtEOF() or self._peek().isspace():
                 print("Found whitespace")
                 break
-            
+
             raise ValueError("Invalid number input")
 
         print("Broken out of loop")
         number_literal = self._source[self._start:self._current]
         print(base_str)
         base: int = 10 if base_str is None else alternate_bases[base_str]
-        literal: Literal = int(number_literal, base) if is_integer else float(number_literal)    
+        literal: Literal = int(number_literal, base) if is_integer else float(number_literal)
 
         self._addToken(TokenType.NUMBER, literal)
         return (self._current, self._line)

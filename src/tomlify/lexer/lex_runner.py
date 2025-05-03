@@ -11,7 +11,7 @@ def run(source: str) -> None:
             f.write(f"{token}\n")
 
 def runFile(path: str) -> None:
-    with open(path, 'r') as f:
+    with open(path) as f:
         run(f.read())
 
 def main(path: str) -> None:
@@ -22,5 +22,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 -m tomlify.lexer.lex_runner <filename>")
         sys.exit(1)
-    
+
     main(sys.argv[1])

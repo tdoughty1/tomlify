@@ -1,6 +1,7 @@
 from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.token_type import TokenType
 
+
 class CommentLexer(BaseLexer):
     def lex(self) -> tuple[int, int]:
         # A comment goes until the end of the line.

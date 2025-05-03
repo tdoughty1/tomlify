@@ -21,19 +21,20 @@ class Lexer(BaseLexer):
 
         Returns:
             list[Token]: The list of tokens found in the source text.
+
         """
         num = 0
         while not self._isAtEOF():
             if num > 50:
-                break 
+                break
             num += 1
             # We are at the beginning of the next lexeme.
             self._start = self._current
             self._lexToken()
-        
+
         self._tokens.append(Token(TokenType.EOF, "", None, self._line))
         return self._tokens
- 
+
     def _lexToken(self) -> None:
         c = self._peek()
         print(f"Start is {self._start}, Current is {self._current}, Char is '{c}'")
@@ -53,12 +54,11 @@ class Lexer(BaseLexer):
                     self._tokens.extend(lexer._tokens)
 
                     return
-                else:
-                    lexer = StringLexer(self._source[self._current:])
-                    n_chars, _ = lexer.lex(c)
-                    self._current += n_chars
-                    self._tokens.extend(lexer._tokens)
-                    return
+                lexer = StringLexer(self._source[self._current:])
+                n_chars, _ = lexer.lex(c)
+                self._current += n_chars
+                self._tokens.extend(lexer._tokens)
+                return
             case '.':
                 self._advance()
                 self._addToken(TokenType.DOT)
@@ -104,6 +104,6 @@ class Lexer(BaseLexer):
                     self._current += n_chars
                     self._tokens.extend(lexer._tokens)
                 else:
-                    raise ValueError(f"Unexpected character '{repr(c)}' on line {self._line}")
+                    raise ValueError(f"Unexpected character '{c!r}' on line {self._line}")
 
 # TODO add support for line starting indent

@@ -1,6 +1,7 @@
 from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.token_type import TokenType
 
+
 class StringLexer(BaseLexer):
 
     def lex(self, delimiter: str = '"') -> tuple[int, int]:
@@ -30,18 +31,18 @@ class StringLexer(BaseLexer):
 class MultilineStringLexer(BaseLexer):
 
     def lex(self, delimiter: str = '"') -> tuple[int, int]:
-        
+
         print("In scanString with delimiter = ", delimiter)
         print("String = ", self._source)
         print("Current is", self._current)
         print("Start is", self._start)
         print("Line is", self._line)
-        
+
         self._advance(3)
         while True:
 
             print("Current is", self._current)
-            print(f"Char is now '{self._peek()}'")      
+            print(f"Char is now '{self._peek()}'")
 
             # Check we haven't gotten to the end of the file or line
             if self._isAtEOF():
