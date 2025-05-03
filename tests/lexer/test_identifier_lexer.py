@@ -1,8 +1,8 @@
 from tomlify.lexer.identifier_lexer import IdentifierLexer
-from tomlify.lexer.base_lexer import Token
-from tomlify.lexer.base_lexer import TokenType
+from tomlify.lexer.token import Token
+from tomlify.lexer.token_type import TokenType
 
-def test_identifier():
+def test_identifier() -> None:
     input_string = "test"
     lexer = IdentifierLexer(input_string)
     n_chars, n_lines = lexer.lex()
@@ -10,7 +10,7 @@ def test_identifier():
     assert n_chars == len(input_string)
     assert n_lines == 1
 
-def test_identifier_capital():
+def test_identifier_capital() -> None:
     input_string = "Test"
     lexer = IdentifierLexer(input_string)
     n_chars, n_lines = lexer.lex()
@@ -18,7 +18,7 @@ def test_identifier_capital():
     assert n_chars == len(input_string)
     assert n_lines == 1
 
-def test_identifier_number():
+def test_identifier_number() -> None:
     input_string = "test1"
     lexer = IdentifierLexer(input_string)
     n_chars, n_lines = lexer.lex()
@@ -26,7 +26,7 @@ def test_identifier_number():
     assert n_chars == len(input_string)
     assert n_lines == 1
 
-def test_identifier_underscore():
+def test_identifier_underscore() -> None:
     input_string = "test_1"
     lexer = IdentifierLexer(input_string)
     n_chars, n_lines = lexer.lex()
@@ -34,7 +34,7 @@ def test_identifier_underscore():
     assert n_chars == len(input_string)
     assert n_lines == 1
 
-def test_identifier_hyphen():
+def test_identifier_hyphen() -> None:
     input_string = "test-1"
     lexer = IdentifierLexer(input_string)
     n_chars, n_lines = lexer.lex()
@@ -42,7 +42,7 @@ def test_identifier_hyphen():
     assert n_chars == len(input_string)
     assert n_lines == 1
 
-def test_identifier_ended_period():
+def test_identifier_ended_period() -> None:
     input_string = "test"
     lexer = IdentifierLexer(input_string+".test2")
     n_chars, n_lines = lexer.lex()

@@ -3,7 +3,7 @@ from tomlify.lexer.token_type import TokenType
 
 class StringLexer(BaseLexer):
 
-    def lex(self, delimiter: str = '"'):
+    def lex(self, delimiter: str = '"') -> tuple[int, int]:
         self._advance()
         while True:
 
@@ -29,7 +29,7 @@ class StringLexer(BaseLexer):
 
 class MultilineStringLexer(BaseLexer):
 
-    def lex(self, delimiter: str = '"'):
+    def lex(self, delimiter: str = '"') -> tuple[int, int]:
         
         print("In scanString with delimiter = ", delimiter)
         print("String = ", self._source)

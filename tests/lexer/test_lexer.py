@@ -1,5 +1,3 @@
-import pytest
-
 from tests.helpers import (
     IDENTIFIER_TOKEN,
     EQUAL_TOKEN,
@@ -90,7 +88,7 @@ def test_dotted_quoted_key() -> None:
     ]
     assert actual_output == expected_output
 
-def test_dotted_spaced_key():
+def test_dotted_spaced_key() -> None:
     input_string = "fruit . flavor"
     lexer = Lexer(input_string)
     actual_output = lexer.lexTokens()

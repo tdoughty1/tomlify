@@ -3,7 +3,7 @@ from tomlify.lexer.token_type import TokenType
 
 
 class IdentifierLexer(BaseLexer):
-    def lex(self) -> None:
+    def lex(self) -> tuple[int, int]:
         while (self._isidentifier(self._peek())):
             self._advance()
 

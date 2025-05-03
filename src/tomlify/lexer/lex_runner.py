@@ -1,23 +1,20 @@
 import sys
 
-from tomlify.lexer.base_lexer import Scanner
+from tomlify.lexer.lexer import Lexer
 
 
-
-def run(source):
-    scanner = Scanner(source)
-    scanner.scanTokens()
+def run(source: str) -> None:
+    lexer = Lexer(source)
+    lexer.lexTokens()
     with open("tokens.txt", "w") as f:
-        for token in scanner.tokens:
+        for token in lexer._tokens:
             f.write(f"{token}\n")
-    return
 
-
-def runFile(path):
+def runFile(path: str) -> None:
     with open(path, 'r') as f:
         run(f.read())
 
-def main(path):
+def main(path: str) -> None:
     runFile(path)
 
 if __name__ == "__main__":

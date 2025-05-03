@@ -2,7 +2,7 @@ test:
     uv run pytest -vv
 
 lint:
-    uv run ruff check src tests
+    uv run ruff check .
 
 typecheck:
-    uv run mypy src --disallow-untyped-calls --disallow-untyped-defs
+    uv run mypy --strict src tests

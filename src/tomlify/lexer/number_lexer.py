@@ -1,13 +1,14 @@
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.token import Literal
 from tomlify.lexer.token_type import TokenType
 
 class NumberLexer(BaseLexer):
-    def lex(self) -> None: 
+    def lex(self) -> tuple[int, int]: 
 
         is_integer = True
         is_hex_base = False
-        alternate_bases = {'b': 2, 'o': 8, 'x': 16}
-        base = None
+        alternate_bases: dict[str, int] = {'b': 2, 'o': 8, 'x': 16}
+        base_str: str | None = None
 
         print("In NumberLexer.lex()")
         print("String =", self._source)
@@ -26,9 +27,9 @@ class NumberLexer(BaseLexer):
                 print(f"Found starting zero '{self._peek()}'")
                 if self._peek(1) in alternate_bases:
                     print(f"Found base '{self._peek(1)}'")
-                    base = self._peek(1)
-                    print(base)
-                    if base == 'x':
+                    base_str = self._peek(1)
+                    print(base_str)
+                    if base_str == 'x':
                         is_hex_base = True
                     self._advance(2)
                     continue
@@ -75,7 +76,7 @@ class NumberLexer(BaseLexer):
                 self._advance()
                 continue
 
-            if self._isAtEOF() or self._peek().isspace:
+            if self._isAtEOF() or self._peek().isspace():
                 print("Found whitespace")
                 break
             
@@ -83,9 +84,9 @@ class NumberLexer(BaseLexer):
 
         print("Broken out of loop")
         number_literal = self._source[self._start:self._current]
-        print(base)
-        base = 10 if base is None else alternate_bases[base]
-        literal = int(number_literal, base) if is_integer else float(number_literal)    
+        print(base_str)
+        base: int = 10 if base_str is None else alternate_bases[base_str]
+        literal: Literal = int(number_literal, base) if is_integer else float(number_literal)    
 
         self._addToken(TokenType.NUMBER, literal)
         return (self._current, self._line)

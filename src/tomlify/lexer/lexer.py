@@ -39,7 +39,7 @@ class Lexer(BaseLexer):
         print(f"Start is {self._start}, Current is {self._current}, Char is '{c}'")
         match c:
             case '#':
-                lexer = CommentLexer(self._source[self._current:])
+                lexer: BaseLexer = CommentLexer(self._source[self._current:])
                 n_chars, _ = lexer.lex()
                 self._current += n_chars
                 self._tokens.extend(lexer._tokens)

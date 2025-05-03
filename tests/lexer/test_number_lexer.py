@@ -4,7 +4,7 @@ from tomlify.lexer.number_lexer import NumberLexer
 from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
 
-def test_number_int():
+def test_number_int() -> None:
     input_num_string = "99"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -12,7 +12,7 @@ def test_number_int():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_int_zero():
+def test_number_int_zero() -> None:
     input_num_string = "0"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -20,7 +20,7 @@ def test_number_int_zero():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_underscore():
+def test_number_underscore() -> None:
     input_num_string = "1_000"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -28,7 +28,7 @@ def test_number_underscore():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_multiple_underscore():
+def test_number_multiple_underscore() -> None:
     input_num_string = "1_2_3_4_5"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -36,7 +36,7 @@ def test_number_multiple_underscore():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_hex_uppercase():
+def test_number_hex_uppercase() -> None:
     input_num_string = "0xDEADBEEF"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -44,7 +44,7 @@ def test_number_hex_uppercase():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_hex_lowercase():
+def test_number_hex_lowercase() -> None:
     input_num_string = "0xdeadbeef"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -52,7 +52,7 @@ def test_number_hex_lowercase():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_hex_underscore():
+def test_number_hex_underscore() -> None:
     input_num_string = "0xdead_beef"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -60,7 +60,7 @@ def test_number_hex_underscore():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_octal():
+def test_number_octal() -> None:
     input_num_string = "0o377"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -68,7 +68,7 @@ def test_number_octal():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_binary():
+def test_number_binary() -> None:
     input_num_string = "0b10101010"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -76,7 +76,7 @@ def test_number_binary():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_number_float():
+def test_number_float() -> None:
     input_num_string = "3.1415"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -84,7 +84,7 @@ def test_number_float():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def float_exponent():
+def float_exponent() -> None:
     input_num_string = "5e+22"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -92,7 +92,7 @@ def float_exponent():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def float_negative_exponent():
+def float_negative_exponent() -> None:
     input_num_string = "1e-2"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -100,7 +100,7 @@ def float_negative_exponent():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def float_positive_exponent():
+def float_positive_exponent() -> None:
     input_num_string = "1e+22"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -108,7 +108,7 @@ def float_positive_exponent():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def float_positive_capital_e():
+def float_positive_capital_e() -> None:
     input_num_string = "1E+22"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -116,7 +116,7 @@ def float_positive_capital_e():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def float_full_exponent():
+def float_full_exponent() -> None:
     input_num_string = "6.626e-34"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
@@ -124,25 +124,25 @@ def float_full_exponent():
     assert n_chars == len(input_num_string)
     assert n_lines == 1
 
-def test_invalid_floats_predecimal():
+def test_invalid_floats_predecimal() -> None:
     input_num_string = ".7"
     lexer = NumberLexer(input_num_string)
     with pytest.raises(ValueError):
         lexer.lex()
 
-def test_invalid_floats_postdecimal():
+def test_invalid_floats_postdecimal() -> None:
     input_num_string = "7."
     lexer = NumberLexer(input_num_string)
     with pytest.raises(ValueError):
         lexer.lex()
 
-def test_invalid_floats_exponent():
+def test_invalid_floats_exponent() -> None:
     input_num_string = "3.e+20"
     lexer = NumberLexer(input_num_string)
     with pytest.raises(ValueError):
         lexer.lex()
 
-def test_float_underscore():
+def test_float_underscore() -> None:
     input_num_string = "224_617.445_991_228"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()

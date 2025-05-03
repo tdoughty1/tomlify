@@ -22,12 +22,13 @@ class Value(ABC):
 
 
 class Integer(int, Value):
+    _type: str
 
     def __new__(cls, value: str) -> Integer:
 
         if value.startswith("0x"):
             obj = int.__new__(cls, value, 16)
-            obj._type = "hex"
+            obj._type = "hex"  # 
         elif value.startswith("0b"):
             obj = int.__new__(cls, value, 2)
             obj._type = "bin"
@@ -41,8 +42,10 @@ class Integer(int, Value):
         obj._raw = value
         return obj
 
+class ValueString(str, Value):
+    pass
 
-class BasicString(str, Value):
+class BasicString(ValueString):
     def __new__(cls, value: str) -> BasicString:
         print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
         raw_value = value
@@ -52,7 +55,7 @@ class BasicString(str, Value):
         return string
 
 
-class MultilineBasicString(str, Value):
+class MultilineBasicString(ValueString):
     def __new__(cls, value: str) -> MultilineBasicString:
         print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
         raw_value = value
@@ -64,7 +67,7 @@ class MultilineBasicString(str, Value):
         string._raw = raw_value
         return string 
 
-class LiteralString(str, Value):
+class LiteralString(ValueString):
     def __new__(cls, value: str) -> LiteralString:
         print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
         raw_value = value
@@ -73,7 +76,7 @@ class LiteralString(str, Value):
         string._raw = raw_value
         return string
 
-class MultilineLiteralString(str, Value):
+class MultilineLiteralString(ValueString):
     def __new__(cls, value: str) -> MultilineLiteralString:
         print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}")
         print(f"type(value)={type(value)}")

@@ -10,6 +10,7 @@ from .values import (
     LocalTime, 
     MultilineBasicString, 
     MultilineLiteralString,
+    ValueString
 )
 
 SECONDS_PER_HOUR = 3600
@@ -108,7 +109,8 @@ def parse_date_time(date_time_str: str) -> TimeObject:
     raise ValueError(f"Invalid date time input: {date_time_str}")
 
 
-def parse_string(raw_string):
+
+def parse_string(raw_string: str) -> ValueString:
     if raw_string.startswith('"""'):
         return MultilineBasicString(raw_string)
     elif raw_string.startswith("'''"):
