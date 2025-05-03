@@ -1,7 +1,16 @@
 from datetime import timedelta, timezone
 import re
 
-from .values import LocalDate, LocalDateTime, LocalTime, DateTime
+from .values import (
+    BasicString, 
+    DateTime, 
+    LocalDate, 
+    LocalDateTime, 
+    LiteralString, 
+    LocalTime, 
+    MultilineBasicString, 
+    MultilineLiteralString,
+)
 
 SECONDS_PER_HOUR = 3600
 SECONDS_PER_MINUTE = 60
@@ -97,3 +106,17 @@ def parse_date_time(date_time_str: str) -> TimeObject:
         return LocalTime(**kwargs)
 
     raise ValueError(f"Invalid date time input: {date_time_str}")
+
+
+def parse_string(raw_string):
+    if raw_string.startswith('"""'):
+        return MultilineBasicString(raw_string)
+    elif raw_string.startswith("'''"):
+        return MultilineLiteralString(raw_string)
+    elif raw_string.startswith("'"):
+        return LiteralString(raw_string)
+    elif raw_string.startswith('"'):
+        return BasicString(raw_string)
+    else:
+        raise ValueError("Unknown string format")
+    

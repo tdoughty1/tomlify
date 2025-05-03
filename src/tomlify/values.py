@@ -2,6 +2,16 @@ from __future__ import annotations
 from abc import ABC
 import datetime
 from typing import Any
+import re
+
+
+def startw_with_newline(s: str) -> bool:
+    return len(s) > 0 and (s[0] == "\n" or s[0] == "\r"or s[0:1] == "\r\n")
+
+def remove_backslashed_whitespace(s: str) -> str:
+    tokens = re.split(r'\\[\n\r\f]', s)
+    tokens = [token if n == 0 else token.lstrip() for n, token in enumerate(tokens)]
+    return "".join(tokens)
 
 class Value(ABC):
 
@@ -12,7 +22,6 @@ class Value(ABC):
 
 
 class Integer(int, Value):
-    _type: str
 
     def __new__(cls, value: str) -> Integer:
 
@@ -34,16 +43,47 @@ class Integer(int, Value):
 
 
 class BasicString(str, Value):
-    pass
+    def __new__(cls, value: str) -> BasicString:
+        print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
+        raw_value = value
+        value = value[1:-1]
+        string = super().__new__(cls, value)
+        string._raw = raw_value
+        return string
 
-class MultilineBasic(str, Value):
-    pass 
 
-class LiteralBasic(str, Value):
-    pass
+class MultilineBasicString(str, Value):
+    def __new__(cls, value: str) -> MultilineBasicString:
+        print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
+        raw_value = value
+        value = value[3:-3]
+        value = value.lstrip() if startw_with_newline(value) else value
+        value = remove_backslashed_whitespace(value)
+        print(value)
+        string = super().__new__(cls, value)
+        string._raw = raw_value
+        return string 
 
-class MultilineLiteral(str, Value):
-    pass
+class LiteralString(str, Value):
+    def __new__(cls, value: str) -> LiteralString:
+        print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}, type(value)={type(value)}")
+        raw_value = value
+        value = value[1:-1]
+        string = super().__new__(cls, value)
+        string._raw = raw_value
+        return string
+
+class MultilineLiteralString(str, Value):
+    def __new__(cls, value: str) -> MultilineLiteralString:
+        print(f"In __new__ with cls = {cls}, type={type(cls)}, value={value}")
+        print(f"type(value)={type(value)}")
+        raw_value = value
+        value = value[3:-3]
+        value = value.lstrip("\n\r") if startw_with_newline(value) else value
+        print(value)
+        string = super().__new__(cls, value)
+        string._raw = raw_value
+        return string
 
 class Float(float, Value):
     def __new__(cls, value: str) -> Float:
