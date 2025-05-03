@@ -3,78 +3,192 @@ import math
 
 import pytest
 
-from tomlify.utils import parse_date_time
-from tomlify.values import Boolean, DateTime, Float, Integer, LocalDate, LocalDateTime, LocalTime
+from tomlify.utils import parse_date_time, parse_string
+from tomlify.values import (
+    BasicString,
+    Boolean, 
+    DateTime, 
+    Float, 
+    Integer, 
+    LiteralString,
+    LocalDate, 
+    LocalDateTime, 
+    LocalTime,
+    MultilineBasicString,
+    MultilineLiteralString,
+)
 
 
+def test_valid_string_basic_escape() -> None:
+    input_string = '''"I'm a string. \"You can quote me\". Name\tJos\u00E9\nLocation\tSF."'''
+    output_string = '''"I'm a string. \"You can quote me\". Name\tJos\u00E9\nLocation\tSF."'''
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(output_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-str = '''"I'm a string. \"You can quote me\". Name\tJos\u00E9\nLocation\tSF."'''
-
-
-str1 = """
+def test_valid_string_multiline_basic() -> None:
+    input_string = r'''"""
 Roses are red
-Violets are blue"""
+Violets are blue"""'''
+    output_string = '''"""Roses are red\nViolets are blue"""'''
+    actual_output = parse_string(input_string)
+    expected_output = MultilineBasicString(output_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# On a Unix system, the above multi-line string will most likely be the same as:
-str2 = "Roses are red\nViolets are blue"
+def test_valid_string_basic_unix_splitline() -> None:
+    input_string = '"Roses are red\nViolets are blue"'
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# On a Windows system, it will most likely be equivalent to:
-str3 = "Roses are red\r\nViolets are blue"
+def test_valid_string_basic_windows_splitline() -> None:
+    input_string = '"Roses are red\r\nViolets are blue"'
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# The following strings are byte-for-byte equivalent:
-str1 = "The quick brown fox jumps over the lazy dog."
-
-str2 = """
+def test_valid_string_multiline_escape_one() -> None:
+    input_string = r'''"""
 The quick brown \
 
 
   fox jumps over \
-    the lazy dog."""
+    the lazy dog."""'''
+    output_string = '"""The quick brown fox jumps over the lazy dog."""'
+    actual_output = parse_string(input_string)
+    expected_output = MultilineBasicString(output_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-str3 = """\
+def test_valid_string_multiline_escape_two() -> None:
+    input_string = r'''"""\
        The quick brown \
        fox jumps over \
        the lazy dog.\
-       """
+       """'''
+    output_string = r'''"""The quick brown fox jumps over the lazy dog."""'''
+    actual_output = parse_string(input_string)
+    expected_output = MultilineBasicString(output_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-str4 = """Here are two quotation marks: "". Simple enough."""
-# str5 = """Here are three quotation marks: """."""  # INVALID
-str5 = """Here are three quotation marks: ""\"."""
-str6 = """Here are fifteen quotation marks: ""\"""\"""\"""\"""\"."""
+def test_valid_string_basic_two_quotation_marks() -> None:
+    input_string = '"""Here are two quotation marks: "". Simple enough."""'
+    actual_output = parse_string(input_string)
+    expected_output = MultilineBasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# "This," she said, "is just a pointless statement."
-str7 = '""""This," she said, "is just a pointless statement.""""'
+def test_invalid_string_basic_three_quotation_marks() -> None:
+    input_string = '''"""Here are three quotation marks: """."""'''
+    with pytest.raises(ValueError):
+        BasicString(input_string)
 
+def test_valid_string_basic_three_quotation_marks() -> None:
+    input_string = """Here are three quotation marks: ""\"."""
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# What you see is what you get.
-winpath  = r'C:\Users\nodejs\templates'
-winpath2 = r"'\\ServerX\admin$\system32\'"
-quoted   = r'Tom "Dubs" Preston-Werner'
-regex    = r"'<\i\c*\s*>'"
+def test_valid_string_basic_fifteen_quotation_marks() -> None:
+    input_string = """Here are fifteen quotation marks: ""\"""\"""\"""\"""\"."""
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-regex2 = r'''I [dw]on't need \d{2} apples'''
-lines  = '''
-The first newline is
-trimmed in raw strings.
-   All other whitespace
-   is preserved.
-'''
+def test_skipped_string_four_quotation_marks() -> None:
+    input_string = '""""This," she said, "is just a pointless statement.""""'
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-quot15 = '''Here are fifteen quotation marks: """""""""""""""'''
+def test_valid_literal_basic_one() -> None:
+    input_string = r"'C:\Users\nodejs\templates'"
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# apos15 = '''Here are fifteen apostrophes: ''''''''''''''''''  # INVALID
-apos15 = "Here are fifteen apostrophes: '''''''''''''''"
+def test_valid_literal_basic_two() -> None:
+    input_string = r"'\\ServerX\admin$\system32\'"
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
-# 'That,' she said, 'is still pointless.'
-str = "''''That,' she said, 'is still pointless.''''"
+def test_valid_literal_basic_three() -> None:
+    input_string = r"""'Tom "Dubs" Preston-Werner'"""
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
+def test_valid_literal_basic_four() -> None:
+    input_string = r"'<\i\c*\s*>'"
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_valid_literal_basic_regex() -> None:
+    input_string = r'''I [dw]on't need \d{2} apples'''
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_valid_multiline_literal() -> None:
+    input_string = '''
+    The first newline is
+    trimmed in raw strings.
+    All other whitespace
+    is preserved.
+    '''
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_valid_literal_fifteen_quotation_marks():
+    input_string = '''Here are fifteen quotation marks: """""""""""""""'''
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_invalid_literal_fifteen_apostrophes():
+    input_string = """'''Here are fifteen apostrophes: ''''''''''''''''''"""
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_valid_literal_fifteen_apostrophes():
+    input_string = "Here are fifteen apostrophes: '''''''''''''''"
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
+
+def test_skipped_string_four_apostrophes():
+    input_string= "''''That,' she said, 'is still pointless.''''"
+    actual_output = parse_string(input_string)
+    expected_output = BasicString(input_string)
+    assert actual_output == expected_output
+    assert actual_output._raw == input_string
 
 def test_valid_integer_positive() -> None:
     input_integer_string = "+99"
     actual_output = Integer(input_integer_string)
     assert actual_output == 99
     assert actual_output._raw == input_integer_string
-
 
 def test_valid_integer_no_sign() -> None:
     input_integer_string = "42"
@@ -123,7 +237,6 @@ def test_valid_integer_three_many_underscore() -> None:
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'int'
 
-
 def test_hexidecimal_capital() -> None:
     input_integer_string = "0xDEADBEEF"
     actual_output = Integer(input_integer_string)
@@ -151,7 +264,6 @@ def test_octal_long() -> None:
     assert actual_output == 0o01234567
     assert actual_output._raw == input_integer_string
     assert actual_output._type == 'oct'
-
 
 def test_octal_short() -> None:
     input_integer_string = "0o755"
@@ -209,12 +321,10 @@ def test_valid_float_fractional_exponent() -> None:
     assert actual_output == 6.626e-34
     assert actual_output._raw == input_float_string
 
-
 def test_invalid_float_no_leading_digit() -> None:
     input_float_string = ".7"
     with pytest.raises(ValueError):
         Float(input_float_string)
-
 
 def test_invalid_float_no_trailing_digit() -> None:
     input_float_string = "7."
@@ -285,7 +395,6 @@ def test_invalid_boolean() -> None:
     with pytest.raises(ValueError):
         Boolean(input_boolean_string)
 
-
 DATE_TEST_PARAMS = {
     'year' : 1979, 
     'month': 5, 
@@ -294,7 +403,6 @@ DATE_TEST_PARAMS = {
     'minute': 32, 
     'second': 0,
 }
-
 
 def test_valid_datetime_with_Z() -> None:
     input_kwargs = DATE_TEST_PARAMS.copy() 
