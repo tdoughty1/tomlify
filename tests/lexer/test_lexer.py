@@ -157,8 +157,12 @@ def test_basic_string_apostrophe() -> None:
 def test_basic_string_multiline() -> None:
     input_string = r'"This is a string.\n Split over lines."'
     lexer = Lexer(input_string)
-    with pytest.raises(ValueError):
-        actual_output = lexer.lexTokens()
+    actual_output = lexer.lexTokens()
+    expected_output = [
+        STRING_TOKEN(r'"This is a string.\n Split over lines."', 'This is a string.\\n Split over lines.', 1),
+        EOF_TOKEN(1)
+    ]
+    assert actual_output == expected_output
 
 def test_basic_string_containing_string() -> None:
     input_string = r'''"I'm a string. \"You can quote me\"."'''
@@ -176,6 +180,6 @@ def test_multiline_basic_string() -> None:
     actual_output = lexer.lexTokens()
     expected_output = [
         STRING_TOKEN(r'"""This is a string.\n Split over lines."""', input_string[3:-3], 1),
-        EOF_TOKEN(1)
+        EOF_TOKEN(2)
     ]
     assert actual_output == expected_output

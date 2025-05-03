@@ -3,12 +3,13 @@ from tomlify.lexer.token_type import TokenType
 
 class BaseLexer:
 
-    def __init__(self, source: str) -> None:
+    def __init__(self, source: str, start_line: int = 1) -> None:
         self._source: str = source
         self._tokens: list[str] = []
         self._start: int = 0
         self._current: int = 0
         self._line: int = 1
+        self._offset: int = start_line
 
     def _match(self, expected: str) -> bool:
         if self._isAtEOF():
@@ -18,7 +19,7 @@ class BaseLexer:
         self._current += 1
         return True
 
-    def _isAtEOF(self, num = 0) -> bool:    
+    def _isAtEOF(self, num = 0) -> bool:
         return self._current + num >= len(self._source)
     
     def _isAtEOL(self, num = 0) -> bool:
@@ -31,6 +32,8 @@ class BaseLexer:
         self._current += num
 
     def _peek(self, num = 0) -> str:
+        if  self._current + num < 0:
+            return '\0'
         if self._isAtEOF() or self._current + num >= len(self._source):
             return '\0'
         return self._source[self._current + num]
@@ -45,4 +48,7 @@ class BaseLexer:
 
     def _addToken(self, type_: TokenType, literal: str = None) -> None:
         text = self._source[self._start:self._current]
-        self._tokens.append(Token(type_, text, literal, self._line))
+        print(f"Adding token {type_} with text '{text}'")
+        print(self._offset)
+        current_line = self._offset
+        self._tokens.append(Token(type_, text, literal, current_line))
