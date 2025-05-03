@@ -1,6 +1,8 @@
 import pytest
 
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.token import Token
+from tomlify.lexer.token_type import TokenType
 
 def test_match():
     lexer = BaseLexer("test")
@@ -97,3 +99,9 @@ def test_no_match():
 def test_match_EOF():
     lexer = BaseLexer("")
     assert not lexer._match("t")
+
+
+def test_add_token():
+    lexer = BaseLexer("")
+    lexer._addToken(TokenType.IDENTIFIER, "test")
+    assert lexer._tokens == [Token(TokenType.IDENTIFIER, "", "test", 1)]    

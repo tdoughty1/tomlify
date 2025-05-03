@@ -77,11 +77,6 @@ class Lexer(BaseLexer):
                 else:
                     raise ValueError(f"Unexpected character '{repr(c)}' on line {self._line}")
 
-    
-    def _addToken(self, type_: str, literal: str = None) -> None:
-        text = self._source[self._start:self._current]
-        text = '\n' if text == '\n' else text
-        self._tokens.append(Token(type_, text, literal, self._line))
 
     def _isidentifier(self, c: str) -> bool:
         return c.isalnum() or c == '_' or c == '-'
@@ -114,7 +109,6 @@ class Lexer(BaseLexer):
         print(value)
         self._addToken(TokenType.COMMENT, value)
         return
-
 
     def _string(self, delimiter: str = '"') -> None:
 

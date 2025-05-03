@@ -1,3 +1,6 @@
+from tomlify.lexer.token import Token
+from tomlify.lexer.token_type import TokenType
+
 class BaseLexer:
 
     def __init__(self, source: str) -> None:
@@ -39,3 +42,7 @@ class BaseLexer:
             return False
         self._current += 1
         return True
+
+    def _addToken(self, type_: TokenType, literal: str = None) -> None:
+        text = self._source[self._start:self._current]
+        self._tokens.append(Token(type_, text, literal, self._line))
