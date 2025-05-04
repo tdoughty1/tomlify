@@ -8,6 +8,19 @@ from tomlify.lexer.string_lexer import MultilineStringLexer, StringLexer
 from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
 
+TOKEN_TYPE_MAP = {
+    '.': TokenType.DOT,
+    '{': TokenType.LEFT_BRACE,
+    '}': TokenType.RIGHT_BRACE,
+    '[': TokenType.LEFT_BRACKET,
+    ']': TokenType.RIGHT_BRACKET,
+    ',': TokenType.COMMA,
+    ':': TokenType.COLON,
+    '=': TokenType.EQUAL,
+    '-': TokenType.MINUS,
+    '+': TokenType.PLUS,
+    '/': TokenType.SLASH,
+}
 
 class Lexer(BaseLexer):
 
@@ -43,45 +56,21 @@ class Lexer(BaseLexer):
                 print("Current line is", self._current_line)
                 if self._peek(1) == c and self._peek(2) == c:
                     print("Current line is", self._current_line)
-                    return self.call_sublexer(MultilineStringLexer, delimiter=c)
-                print("Current line is", self._current_line)
-                return self.call_sublexer(StringLexer, delimiter=c)
-            case '.':
+                    self.call_sublexer(MultilineStringLexer, delimiter=c)
+                else:
+                    self.call_sublexer(StringLexer, delimiter=c)
+            case '.'|'{'|'}'|':'|'='|','|'-'|'+':
                 self._advance()
-                self._addToken(TokenType.DOT)
-                return None
-            case '{':
-                self._advance()
-                self._addToken(TokenType.LEFT_BRACE)
-                return None
-            case '}':
-                self._advance()
-                self._addToken(TokenType.RIGHT_BRACE)
-                return None
-            case ':':
-                self._advance()
-                self._addToken(TokenType.COLON)
-                return None
-            case '=':
-                self._advance()
-                print("Current line is", self._current_line)
-                self._addToken(TokenType.EQUAL)
-                print("Current line is", self._current_line)
-                return None
-            case ',':
-                self._advance()
-                self._addToken(TokenType.COMMA)
-                return None
+                token = TOKEN_TYPE_MAP[c]
+                self._addToken(token)
             case ' ':
                 self._advance()
-                return None
             case '\n'|'\r':
                 self._advance()
                 self._addToken(TokenType.NEWLINE)
                 print("Current line is", self._current_line)
                 self._current_line += 1
                 print("Current line is", self._current_line)
-                return None
             case _:
                 if c.isdigit():
                     self.call_sublexer(NumberLexer)
@@ -91,5 +80,6 @@ class Lexer(BaseLexer):
                     print("Current line is", self._current_line)
                 else:
                     raise ValueError(f"Unexpected character '{c!r}' on line {self._current_line}")
+        return None
 
 # TODO add support for line starting indent
