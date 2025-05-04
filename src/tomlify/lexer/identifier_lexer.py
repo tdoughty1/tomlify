@@ -8,7 +8,7 @@ class IdentifierLexer(BaseLexer):
             self._advance()
 
         self._addToken(TokenType.IDENTIFIER)
-        return (self._current, self._line)
+        return (self._current, self._current_line - self._start_line)
 
     @staticmethod
     def _isidentifier(c: str) -> bool:

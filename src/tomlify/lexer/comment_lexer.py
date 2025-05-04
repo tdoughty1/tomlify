@@ -9,4 +9,4 @@ class CommentLexer(BaseLexer):
             self._advance()
         value = self._source[self._start + 1: self._current]
         self._addToken(TokenType.COMMENT, value)
-        return (self._current, self._line)
+        return (self._current, self._current_line - self._start_line)

@@ -1,19 +1,50 @@
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+
 from tomlify.lexer.token import Literal, Token
 from tomlify.lexer.token_type import TokenType
 
 
-class BaseLexer:
+class BaseLexer(ABC):
 
-    def __init__(self, source: str, start_line: int = 1) -> None:
+    def __init__(self, source: str) -> tuple[int, int]:
         self._source: str = source
         self._tokens: list[Token] = []
         self._start: int = 0
         self._current: int = 0
-        self._line: int = 1
-        self._offset: int = start_line
+        self._start_line: int = 1
+        self._current_line: int = 1
 
+
+    def call_sublexer(self, sublexer: BaseLexer, delimiter: str | None = None) -> tuple[int]:
+
+        print(f"Calling sublexer {sublexer}")
+        lexer = sublexer(self._source[self._current:])
+
+        print("Current line is", self._current_line)
+        if delimiter is not None:
+            n_chars, n_lines = lexer.lex(delimiter)
+        else:
+            n_chars, n_lines = lexer.lex()
+
+        print(f"Sublexer returned {n_chars} characters and {n_lines} lines")
+
+        print("Current line is", self._current_line)
+
+        self._current += n_chars
+        self._current_line += n_lines
+        print(lexer.get_tokens())
+        self._tokens.extend(lexer.get_tokens())
+        print(self._tokens)
+        return (n_chars, self._current_line - self._start_line)
+
+    @abstractmethod
     def lex(self) -> tuple[int, int]:
-        raise NotImplementedError("Subclasses must implement this method")
+        pass
+
+    def get_tokens(self) -> list[Token]:
+        return self._tokens
 
     def _match(self, expected: str) -> bool:
         if self._isAtEOF():
@@ -43,7 +74,4 @@ class BaseLexer:
 
     def _addToken(self, type_: TokenType, literal: Literal | None = None) -> None:
         text = self._source[self._start:self._current]
-        print(f"Adding token {type_} with text '{text}'")
-        print(self._offset)
-        current_line = self._offset
-        self._tokens.append(Token(type_, text, literal, current_line))
+        self._tokens.append(Token(type_, text, literal, self._start_line))

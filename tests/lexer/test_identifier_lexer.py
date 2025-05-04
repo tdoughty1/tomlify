@@ -8,7 +8,7 @@ def test_identifier() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_identifier_capital() -> None:
     input_string = "Test"
@@ -16,7 +16,7 @@ def test_identifier_capital() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_identifier_number() -> None:
     input_string = "test1"
@@ -24,7 +24,7 @@ def test_identifier_number() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_identifier_underscore() -> None:
     input_string = "test_1"
@@ -32,7 +32,7 @@ def test_identifier_underscore() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_identifier_hyphen() -> None:
     input_string = "test-1"
@@ -40,7 +40,7 @@ def test_identifier_hyphen() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_identifier_ended_period() -> None:
     input_string = "test"
@@ -48,4 +48,4 @@ def test_identifier_ended_period() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.IDENTIFIER, input_string, None, 1)]
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0

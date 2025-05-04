@@ -15,7 +15,8 @@ def test_lex_string() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == build_string_token(input_string)
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
+
 
 def test_lex_string_with_escaped_quote() -> None:
     input_string = '"I am a \\"test\\" for now"'
@@ -23,7 +24,8 @@ def test_lex_string_with_escaped_quote() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == build_string_token(input_string)
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
+
 
 def test_lex_unterminated_string() -> None:
     lexer = StringLexer('"Th')
@@ -41,15 +43,16 @@ def test_lex_apostrophe_string() -> None:
     n_chars, n_lines = lexer.lex(delimiter="'")
     assert lexer._tokens == build_string_token(input_string)
     assert n_chars == len(input_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_lex_multiline_string() -> None:
-    input_string = r'"""This is a string.\n Split over lines."""'
+    input_string = '''"""This is a string.
+        Split over lines."""'''
     lexer = MultilineStringLexer(input_string)
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == build_string_token(input_string, True)
     assert n_chars == len(input_string)
-    assert n_lines == 2
+    assert n_lines == 1
 
 def test_lex_multiline_unterminated_string() -> None:
     lexer = MultilineStringLexer('"""This is a string.\n Split over lines.')
@@ -62,4 +65,4 @@ def test_lex_multiline_apostrophe_string() -> None:
     n_chars, n_lines = lexer.lex(delimiter="'")
     assert lexer._tokens == build_string_token(input_string, True)
     assert n_chars == len(input_string)
-    assert n_lines == 2
+    assert n_lines == 1

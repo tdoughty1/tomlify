@@ -11,7 +11,7 @@ from tomlify.lexer.token_type import TokenType
 
 class Lexer(BaseLexer):
 
-    def lexTokens(self) -> list[Token]:
+    def lex(self) -> tuple[int, int]:
         """Tokenizes the source text for relevent TOML lexemes
 
         This method starts at the beginning of the next lexeme and
@@ -23,87 +23,73 @@ class Lexer(BaseLexer):
             list[Token]: The list of tokens found in the source text.
 
         """
-        num = 0
         while not self._isAtEOF():
-            if num > 50:
-                break
-            num += 1
             # We are at the beginning of the next lexeme.
             self._start = self._current
             self._lexToken()
 
-        self._tokens.append(Token(TokenType.EOF, "", None, self._line))
-        return self._tokens
+        print(self._current_line)
+
+        self._tokens.append(Token(TokenType.EOF, "", None, self._current_line))
+        return self._current, self._current_line - self._start_line
 
     def _lexToken(self) -> None:
         c = self._peek()
         print(f"Start is {self._start}, Current is {self._current}, Char is '{c}'")
         match c:
             case '#':
-                lexer: BaseLexer = CommentLexer(self._source[self._current:])
-                n_chars, _ = lexer.lex()
-                self._current += n_chars
-                self._tokens.extend(lexer._tokens)
-                return
+                return self.call_sublexer(CommentLexer)
             case '"' | "'":
+                print("Current line is", self._current_line)
                 if self._peek(1) == c and self._peek(2) == c:
-                    lexer = MultilineStringLexer(self._source[self._current:])
-                    n_chars, n_lines = lexer.lex(c)
-                    self._current += n_chars
-                    self._line += n_lines - 1
-                    self._tokens.extend(lexer._tokens)
-
-                    return
-                lexer = StringLexer(self._source[self._current:])
-                n_chars, _ = lexer.lex(c)
-                self._current += n_chars
-                self._tokens.extend(lexer._tokens)
-                return
+                    print("Current line is", self._current_line)
+                    return self.call_sublexer(MultilineStringLexer, delimiter=c)
+                print("Current line is", self._current_line)
+                return self.call_sublexer(StringLexer, delimiter=c)
             case '.':
                 self._advance()
                 self._addToken(TokenType.DOT)
-                return
+                return None
             case '{':
                 self._advance()
                 self._addToken(TokenType.LEFT_BRACE)
-                return
+                return None
             case '}':
                 self._advance()
                 self._addToken(TokenType.RIGHT_BRACE)
-                return
+                return None
             case ':':
                 self._advance()
                 self._addToken(TokenType.COLON)
-                return
+                return None
             case '=':
-                print("Found equal sign")
                 self._advance()
+                print("Current line is", self._current_line)
                 self._addToken(TokenType.EQUAL)
-                return
+                print("Current line is", self._current_line)
+                return None
             case ',':
                 self._advance()
                 self._addToken(TokenType.COMMA)
-                return
+                return None
             case ' ':
                 self._advance()
-                return
+                return None
             case '\n'|'\r':
                 self._advance()
                 self._addToken(TokenType.NEWLINE)
-                self._line += 1
-                return
+                print("Current line is", self._current_line)
+                self._current_line += 1
+                print("Current line is", self._current_line)
+                return None
             case _:
                 if c.isdigit():
-                    lexer = NumberLexer(self._source[self._current:])
-                    n_chars, _ = lexer.lex()
-                    self._current += n_chars
-                    self._tokens.extend(lexer._tokens)
+                    self.call_sublexer(NumberLexer)
                 elif c.isalpha():
-                    lexer = IdentifierLexer(self._source[self._current:])
-                    n_chars, _ = lexer.lex()
-                    self._current += n_chars
-                    self._tokens.extend(lexer._tokens)
+                    print("Current line is", self._current_line)
+                    self.call_sublexer(IdentifierLexer)
+                    print("Current line is", self._current_line)
                 else:
-                    raise ValueError(f"Unexpected character '{c!r}' on line {self._line}")
+                    raise ValueError(f"Unexpected character '{c!r}' on line {self._current_line}")
 
 # TODO add support for line starting indent

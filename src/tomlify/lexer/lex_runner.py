@@ -1,17 +1,19 @@
 import sys
+from pathlib import Path
 
 from tomlify.lexer.lexer import Lexer
 
 
 def run(source: str) -> None:
     lexer = Lexer(source)
-    lexer.lexTokens()
-    with open("tokens.txt", "w") as f:
+    lexer.lex()
+    lexer.get_tokens()
+    with Path.open("tokens.txt", "w") as f:
         for token in lexer._tokens:
             f.write(f"{token}\n")
 
 def runFile(path: str) -> None:
-    with open(path) as f:
+    with Path.open(path) as f:
         run(f.read())
 
 def main(path: str) -> None:

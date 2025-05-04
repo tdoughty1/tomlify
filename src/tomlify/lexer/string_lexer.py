@@ -25,18 +25,12 @@ class StringLexer(BaseLexer):
         self._advance()
         value = self._source[self._start+1: self._current-1]
         self._addToken(TokenType.STRING, value)
-        return (self._current, 1)
+        return (self._current, self._current_line - self._start_line)
 
 
 class MultilineStringLexer(BaseLexer):
 
     def lex(self, delimiter: str = '"') -> tuple[int, int]:
-
-        print("In scanString with delimiter = ", delimiter)
-        print("String = ", self._source)
-        print("Current is", self._current)
-        print("Start is", self._start)
-        print("Line is", self._line)
 
         self._advance(3)
         while True:
@@ -51,9 +45,6 @@ class MultilineStringLexer(BaseLexer):
             # Check for escaped character
             if self._peek() == '\\':
                 print("Found escaped character")
-                if self._peek(1) == 'n':
-                    print("Found escaped newline")
-                    self._line += 1
                 self._advance(2)
                 continue
 
@@ -63,13 +54,15 @@ class MultilineStringLexer(BaseLexer):
 
             if self._peek() == '\n':
                 print("Found new line")
-                self._line += 1
+                self._current_line += 1
 
             self._advance()
 
         self._advance(3)
         print("String is", self._source[self._start: self._current])
         value = self._source[self._start + 3: self._current - 3]
-        print("Line is", self._line)
         self._addToken(TokenType.STRING, value)
-        return (self._current, self._line)
+        print("Tokens are", self._tokens)
+        print("Offset is", self._current - self._start)
+        return (self._current, self._current_line - self._start_line)
+

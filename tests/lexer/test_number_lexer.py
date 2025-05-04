@@ -8,9 +8,9 @@ def test_number_int() -> None:
     input_num_string = "99"
     lexer = NumberLexer(input_num_string)
     n_chars, n_lines = lexer.lex()
-    assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 99.0, 1)]
+    assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 99, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_int_zero() -> None:
     input_num_string = "0"
@@ -18,7 +18,7 @@ def test_number_int_zero() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 0, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_underscore() -> None:
     input_num_string = "1_000"
@@ -26,7 +26,7 @@ def test_number_underscore() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 1000, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_multiple_underscore() -> None:
     input_num_string = "1_2_3_4_5"
@@ -34,7 +34,7 @@ def test_number_multiple_underscore() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 12345, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_hex_uppercase() -> None:
     input_num_string = "0xDEADBEEF"
@@ -42,7 +42,7 @@ def test_number_hex_uppercase() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 3735928559, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_hex_lowercase() -> None:
     input_num_string = "0xdeadbeef"
@@ -50,7 +50,7 @@ def test_number_hex_lowercase() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 3735928559, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_hex_underscore() -> None:
     input_num_string = "0xdead_beef"
@@ -58,7 +58,7 @@ def test_number_hex_underscore() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 3735928559, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_octal() -> None:
     input_num_string = "0o377"
@@ -66,7 +66,7 @@ def test_number_octal() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 255, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_binary() -> None:
     input_num_string = "0b10101010"
@@ -74,7 +74,7 @@ def test_number_binary() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 170, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_number_float() -> None:
     input_num_string = "3.1415"
@@ -82,7 +82,7 @@ def test_number_float() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 3.1415, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def float_exponent() -> None:
     input_num_string = "5e+22"
@@ -90,7 +90,7 @@ def float_exponent() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 5e+22, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def float_negative_exponent() -> None:
     input_num_string = "1e-2"
@@ -98,7 +98,7 @@ def float_negative_exponent() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 1e-2, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def float_positive_exponent() -> None:
     input_num_string = "1e+22"
@@ -106,7 +106,7 @@ def float_positive_exponent() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 1e+2, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def float_positive_capital_e() -> None:
     input_num_string = "1E+22"
@@ -114,7 +114,7 @@ def float_positive_capital_e() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 1e+2, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def float_full_exponent() -> None:
     input_num_string = "6.626e-34"
@@ -122,7 +122,7 @@ def float_full_exponent() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 1e+2, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
 
 def test_invalid_floats_predecimal() -> None:
     input_num_string = ".7"
@@ -148,4 +148,4 @@ def test_float_underscore() -> None:
     n_chars, n_lines = lexer.lex()
     assert lexer._tokens == [Token(TokenType.NUMBER, input_num_string, 224617.445991228, 1)]
     assert n_chars == len(input_num_string)
-    assert n_lines == 1
+    assert n_lines == 0
