@@ -63,6 +63,12 @@ def test_number_hex_underscore() -> None:
     assert n_chars == len(input_num)
     assert n_lines == 0
 
+def test_invalid_hex() -> None:
+    input_num = "0xdeadmeat"
+    lexer = NumberLexer(input_num)
+    with pytest.raises(ValueError):
+        lexer.lex()
+
 def test_number_octal() -> None:
     input_num = "0o377"
     lexer = NumberLexer(input_num)
@@ -71,6 +77,12 @@ def test_number_octal() -> None:
     assert n_chars == len(input_num)
     assert n_lines == 0
 
+def test_invalid_octal() -> None:
+    input_num = "0o408"
+    lexer = NumberLexer(input_num)
+    with pytest.raises(ValueError):
+        lexer.lex()
+
 def test_number_binary() -> None:
     input_num = "0b10101010"
     lexer = NumberLexer(input_num)
@@ -78,6 +90,12 @@ def test_number_binary() -> None:
     assert lexer.get_tokens() == [Token(TokenType.NUMBER, input_num, 170, 1)]
     assert n_chars == len(input_num)
     assert n_lines == 0
+
+def test_invalid_binary() -> None:
+    input_num = "0b102"
+    lexer = NumberLexer(input_num)
+    with pytest.raises(ValueError):
+        lexer.lex()
 
 def test_number_float() -> None:
     input_num = "3.1415"

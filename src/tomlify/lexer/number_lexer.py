@@ -21,6 +21,9 @@ class BinaryLexer(BaseLexer):
             if c in "01_":
                 self._advance()
                 continue
+            else:
+                msg = f"Invalid character '{c}' in binary literal."
+                raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 2)
         self._add_token(TokenType.NUMBER, literal)
@@ -40,6 +43,9 @@ class OctalLexer(BaseLexer):
             if c in "01234567_":
                 self._advance()
                 continue
+            else:
+                msg = f"Invalid character '{c}' in octal literal."
+                raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 8)
         self._add_token(TokenType.NUMBER, literal)
@@ -58,6 +64,9 @@ class HexLexer(BaseLexer):
             if c in "abcdefABCDEF0123456789_":
                 self._advance()
                 continue
+            else:
+                msg = f"Invalid character '{c}' in hexadecimal literal."
+                raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 16)
         self._add_token(TokenType.NUMBER, literal)
@@ -121,4 +130,3 @@ class NumberLexer(BaseLexer):
                return self.call_sublexer(DecimalLexer)
 
 # TODO: Convert to custom exceptions for more detailed info
-# TODO: Add errors for bad hex, octal, binary numbers
