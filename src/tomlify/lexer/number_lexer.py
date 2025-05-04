@@ -21,9 +21,8 @@ class BinaryLexer(BaseLexer):
             if c in "01_":
                 self._advance()
                 continue
-            else:
-                msg = f"Invalid character '{c}' in binary literal."
-                raise ValueError(msg)
+            msg = f"Invalid character '{c}' in binary literal."
+            raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 2)
         self._add_token(TokenType.NUMBER, literal)
@@ -43,9 +42,8 @@ class OctalLexer(BaseLexer):
             if c in "01234567_":
                 self._advance()
                 continue
-            else:
-                msg = f"Invalid character '{c}' in octal literal."
-                raise ValueError(msg)
+            msg = f"Invalid character '{c}' in octal literal."
+            raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 8)
         self._add_token(TokenType.NUMBER, literal)
@@ -64,9 +62,8 @@ class HexLexer(BaseLexer):
             if c in "abcdefABCDEF0123456789_":
                 self._advance()
                 continue
-            else:
-                msg = f"Invalid character '{c}' in hexadecimal literal."
-                raise ValueError(msg)
+            msg = f"Invalid character '{c}' in hexadecimal literal."
+            raise ValueError(msg)
 
         literal = int(self._source[self._start:self._current], 16)
         self._add_token(TokenType.NUMBER, literal)
@@ -102,6 +99,9 @@ class DecimalLexer(BaseLexer):
                     raise ValueError(msg)
                 self._advance()
                 continue
+
+            msg = f"Invalid character '{c}' in decimal literal."
+            raise ValueError(msg)
 
         number_literal = self._source[self._start:self._current]
         literal: Literal = int(number_literal) if is_integer else float(number_literal)

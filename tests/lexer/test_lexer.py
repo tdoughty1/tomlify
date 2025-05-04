@@ -6,8 +6,14 @@ from tests.helpers import (
     EOF_TOKEN,
     EQUAL_TOKEN,
     IDENTIFIER_TOKEN,
+    MINUS_TOKEN,
     NEWLINE_TOKEN,
+    PLUS_TOKEN,
     STRING_TOKEN,
+    LEFT_BRACKET_TOKEN,
+    RIGHT_BRACKET_TOKEN,
+    DOUBLE_LEFT_BRACKET_TOKEN,
+    DOUBLE_RIGHT_BRACKET_TOKEN,
 )
 from tomlify.lexer.lexer import Lexer
 
@@ -203,3 +209,86 @@ def test_multiline_basic_string() -> None:
         EOF_TOKEN(2),
     ]
     assert actual_output == expected_output
+
+def test_positive_infinity() -> None:
+    input_string = "+inf"
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        PLUS_TOKEN(1),
+        IDENTIFIER_TOKEN("inf", 1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+def test_negative_nan() -> None:
+    input_string = "-nan"
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        MINUS_TOKEN(1),
+        IDENTIFIER_TOKEN("nan", 1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+def test_left_bracket() -> None:
+    input_string = "["
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        LEFT_BRACKET_TOKEN(1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+
+def test_double_left_bracket() -> None:
+    input_string = "[["
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        DOUBLE_LEFT_BRACKET_TOKEN(1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+def test_right_bracket() -> None:
+    input_string = "]"
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        RIGHT_BRACKET_TOKEN(1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+
+def test_double_right_bracket() -> None:
+    input_string = "]]"
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        DOUBLE_RIGHT_BRACKET_TOKEN(1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+
+"""
+def test_date_time_offset() -> None:
+    input_string = "1979-05-27T00:32:00.999999-07:00"
+    lexer = Lexer(input_string)
+    lexer.lex()
+    actual_output = lexer.get_tokens()
+    expected_output = [
+        STRING_TOKEN(input_string, input_string, 1),
+        EOF_TOKEN(1),
+    ]
+    assert actual_output == expected_output
+"""

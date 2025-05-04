@@ -20,6 +20,8 @@ TOKEN_TYPE_MAP = {
     "-": TokenType.MINUS,
     "+": TokenType.PLUS,
     "/": TokenType.SLASH,
+    "[[": TokenType.DOUBLE_LEFT_BRACKET,
+    "]]": TokenType.DOUBLE_RIGHT_BRACKET,
 }
 
 class Lexer(BaseLexer):
@@ -58,6 +60,17 @@ class Lexer(BaseLexer):
                 self._advance()
                 token = TOKEN_TYPE_MAP[c]
                 self._add_token(token)
+            case "[" | "]":
+                if self._peek(1) == c:
+                    print("Found Double Bracket")
+                    self._advance(2)
+                    token = TOKEN_TYPE_MAP[2*c]
+                    print(token)
+                    self._add_token(token)
+                else:
+                    self._advance()
+                    token = TOKEN_TYPE_MAP[c]
+                    self._add_token(token)
             case " ":
                 self._advance()
             case "\n"|"\r":
@@ -74,3 +87,4 @@ class Lexer(BaseLexer):
                     raise ValueError(msg)
 
 # TODO: add support for line starting indent
+# TODO: add support for tables, array of tables

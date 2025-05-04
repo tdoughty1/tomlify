@@ -24,3 +24,21 @@ def COMMENT_TOKEN(value: str, literal: Literal, line: int) -> Token:
 
 def DOT_TOKEN(line: int) -> Token:
     return Token(TokenType.DOT, ".", None, line)
+
+def PLUS_TOKEN(line: int) -> Token:
+    return Token(TokenType.PLUS, "+", None, line)
+
+def MINUS_TOKEN(line: int) -> Token:
+    return Token(TokenType.MINUS, "-", None, line)
+
+def LEFT_BRACKET_TOKEN(line: int) -> Token:
+    return Token(TokenType.LEFT_BRACKET, "[", None, line)
+
+def RIGHT_BRACKET_TOKEN(line: int) -> Token:
+    return Token(TokenType.RIGHT_BRACKET, "]", None, line)
+
+def DOUBLE_LEFT_BRACKET_TOKEN(line: int) -> Token:
+    return Token(TokenType.DOUBLE_LEFT_BRACKET, "[[", None, line)
+
+def DOUBLE_RIGHT_BRACKET_TOKEN(line: int) -> Token:
+    return Token(TokenType.DOUBLE_RIGHT_BRACKET, "]]", None, line)

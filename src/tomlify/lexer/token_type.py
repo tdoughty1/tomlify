@@ -3,7 +3,7 @@ from enum import Enum
 
 class TokenType(Enum):
 
-    #Single-character tokens.
+    # Single-character tokens
     LEFT_PAREN = "LEFT_PAREN"
     RIGHT_PAREN = "RIGHT_PAREN"
     LEFT_BRACE = "LEFT_BRACE"
@@ -18,14 +18,21 @@ class TokenType(Enum):
     EQUAL = "EQUAL"
     COLON = "COLON"
 
-    # Literals.
+    # Double character tokens
+    DOUBLE_LEFT_BRACKET = "DOUBLE_LEFT_BRACKET"
+    DOUBLE_RIGHT_BRACKET = "DOUBLE_RIGHT_BRACKET"
+
+    # Literals
     IDENTIFIER = "IDENTIFIER"
     STRING = "STRING"
     NUMBER = "NUMBER"
     COMMENT = "COMMENT"
+    BOOLEAN = "BOOLEAN"
+    DATE = "DATE"
 
     # Control Characters
     NEWLINE = "NEWLINE"
+    INDENT = "INDENT"
 
     # Terminal Character
     EOF = "EOF"
