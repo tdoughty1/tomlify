@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+from tomlify.lexer.exceptions import LexerEOFError
 from tomlify.lexer.token import Token
 
 if TYPE_CHECKING:
@@ -60,7 +61,7 @@ class BaseLexer(ABC):
     def _advance(self, num: int = 1) -> None:
         if self._isAtEOF():
             msg = "Attempting to advance past end of file."
-            raise ValueError(msg)
+            raise LexerEOFError(msg)
         self._current += num
 
     def _peek(self, num: int = 0) -> str:

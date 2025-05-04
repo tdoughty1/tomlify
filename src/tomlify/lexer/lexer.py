@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.comment_lexer import CommentLexer
+from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.identifier_lexer import IdentifierLexer
 from tomlify.lexer.number_lexer import NumberLexer
 from tomlify.lexer.string_lexer import MultilineStringLexer, StringLexer
@@ -82,7 +83,7 @@ class Lexer(BaseLexer):
                     self.call_sublexer(IdentifierLexer)
                 else:
                     msg = f"Unexpected character '{c!r}' on line {self._current_line}"
-                    raise ValueError(msg)
+                    raise InvalidCharacterError(msg)
 
 # TODO: add support for line starting indent
 # TODO: refactor symbols to use a sublexer to reduce complexity

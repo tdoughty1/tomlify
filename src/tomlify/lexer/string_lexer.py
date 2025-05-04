@@ -1,4 +1,5 @@
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.exceptions import UnterminatedStringError
 from tomlify.lexer.token_type import TokenType
 
 
@@ -11,7 +12,7 @@ class StringLexer(BaseLexer):
             # Check we haven't gotten to the end of the file or line
             if self._isAtEOF() or self._isAtEOL():
                 msg = "Unterminated string."
-                raise ValueError(msg)
+                raise UnterminatedStringError(msg)
 
             # Check for escaped character
             if self._peek() == "\\":
@@ -39,7 +40,7 @@ class MultilineStringLexer(BaseLexer):
             # Check we haven't gotten to the end of the file or line
             if self._isAtEOF():
                 msg = "Unterminated string."
-                raise ValueError(msg)
+                raise UnterminatedStringError(msg)
 
             # Check for escaped character
             if self._peek() == "\\":

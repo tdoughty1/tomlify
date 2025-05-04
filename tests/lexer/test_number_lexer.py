@@ -2,6 +2,7 @@
 
 import pytest
 
+from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.number_lexer import NumberLexer
 from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
@@ -66,7 +67,7 @@ def test_number_hex_underscore() -> None:
 def test_invalid_hex() -> None:
     input_num = "0xdeadmeat"
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_number_octal() -> None:
@@ -80,7 +81,7 @@ def test_number_octal() -> None:
 def test_invalid_octal() -> None:
     input_num = "0o408"
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_number_binary() -> None:
@@ -94,7 +95,7 @@ def test_number_binary() -> None:
 def test_invalid_binary() -> None:
     input_num = "0b102"
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_number_float() -> None:
@@ -148,19 +149,19 @@ def float_full_exponent() -> None:
 def test_invalid_floats_predecimal() -> None:
     input_num = ".7"
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_invalid_floats_postdecimal() -> None:
     input_num = "7."
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_invalid_floats_exponent() -> None:
     input_num = "3.e+20"
     lexer = NumberLexer(input_num)
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidCharacterError):
         lexer.lex()
 
 def test_float_underscore() -> None:

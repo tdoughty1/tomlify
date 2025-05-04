@@ -2,6 +2,7 @@
 
 import pytest
 
+from tomlify.lexer.exceptions import UnterminatedStringError
 from tomlify.lexer.string_lexer import MultilineStringLexer, StringLexer
 from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
@@ -33,12 +34,12 @@ def test_lex_string_with_escaped_quote() -> None:
 
 def test_lex_unterminated_string() -> None:
     lexer = StringLexer('"Th')
-    with pytest.raises(ValueError):
+    with pytest.raises(UnterminatedStringError):
         lexer.lex()
 
 def test_lex_unterminated_new_line() -> None:
     lexer = StringLexer('"Th\n')
-    with pytest.raises(ValueError):
+    with pytest.raises(UnterminatedStringError):
         lexer.lex()
 
 def test_lex_apostrophe_string() -> None:
@@ -60,7 +61,7 @@ def test_lex_multiline_string() -> None:
 
 def test_lex_multiline_unterminated_string() -> None:
     lexer = MultilineStringLexer('"""This is a string.\n Split over lines.')
-    with pytest.raises(ValueError):
+    with pytest.raises(UnterminatedStringError):
         lexer.lex()
 
 def test_lex_multiline_apostrophe_string() -> None:

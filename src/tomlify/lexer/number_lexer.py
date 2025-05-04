@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.token_type import TokenType
 
 if TYPE_CHECKING:
@@ -22,7 +23,7 @@ class BinaryLexer(BaseLexer):
                 self._advance()
                 continue
             msg = f"Invalid character '{c}' in binary literal."
-            raise ValueError(msg)
+            raise InvalidCharacterError(msg)
 
         literal = int(self._source[self._start:self._current], 2)
         self._add_token(TokenType.NUMBER, literal)
@@ -43,7 +44,7 @@ class OctalLexer(BaseLexer):
                 self._advance()
                 continue
             msg = f"Invalid character '{c}' in octal literal."
-            raise ValueError(msg)
+            raise InvalidCharacterError(msg)
 
         literal = int(self._source[self._start:self._current], 8)
         self._add_token(TokenType.NUMBER, literal)
@@ -63,7 +64,7 @@ class HexLexer(BaseLexer):
                 self._advance()
                 continue
             msg = f"Invalid character '{c}' in hexadecimal literal."
-            raise ValueError(msg)
+            raise InvalidCharacterError(msg)
 
         literal = int(self._source[self._start:self._current], 16)
         self._add_token(TokenType.NUMBER, literal)
@@ -85,7 +86,7 @@ class DecimalLexer(BaseLexer):
                 is_integer = False
                 if not (self._has_leading_digit() and self._has_trailing_digit()):
                     msg = "Invalid floating point input"
-                    raise ValueError(msg)
+                    raise InvalidCharacterError(msg)
                 self._advance()
                 continue
 
@@ -96,12 +97,12 @@ class DecimalLexer(BaseLexer):
             if c == "e":
                 if is_integer:
                     msg = "Invalid floating point input"
-                    raise ValueError(msg)
+                    raise InvalidCharacterError(msg)
                 self._advance()
                 continue
 
             msg = f"Invalid character '{c}' in decimal literal."
-            raise ValueError(msg)
+            raise InvalidCharacterError(msg)
 
         number_literal = self._source[self._start:self._current]
         literal: Literal = int(number_literal) if is_integer else float(number_literal)
@@ -129,5 +130,4 @@ class NumberLexer(BaseLexer):
             case _:
                return self.call_sublexer(DecimalLexer)
 
-# TODO: Convert to custom exceptions for more detailed info
 # TODO: Implement time and date types as tokens

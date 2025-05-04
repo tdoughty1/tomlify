@@ -3,6 +3,7 @@
 import pytest
 
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.exceptions import LexerEOFError
 from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
 
@@ -70,7 +71,7 @@ def test_advance() -> None:
 
 def test_advance_end_of_file() -> None:
     lexer = DummyLexer("")
-    with pytest.raises(ValueError):
+    with pytest.raises(LexerEOFError):
         lexer._advance()
 
 def test_advance_two_chars() -> None:
