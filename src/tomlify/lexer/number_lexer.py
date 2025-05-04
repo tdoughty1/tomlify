@@ -130,3 +130,4 @@ class NumberLexer(BaseLexer):
                return self.call_sublexer(DecimalLexer)
 
 # TODO: Convert to custom exceptions for more detailed info
+# TODO: Implement time and date types as tokens

@@ -62,10 +62,8 @@ class Lexer(BaseLexer):
                 self._add_token(token)
             case "[" | "]":
                 if self._peek(1) == c:
-                    print("Found Double Bracket")
                     self._advance(2)
                     token = TOKEN_TYPE_MAP[2*c]
-                    print(token)
                     self._add_token(token)
                 else:
                     self._advance()
@@ -87,4 +85,4 @@ class Lexer(BaseLexer):
                     raise ValueError(msg)
 
 # TODO: add support for line starting indent
-# TODO: add support for tables, array of tables
+# TODO: refactor symbols to use a sublexer to reduce complexity
