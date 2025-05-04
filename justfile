@@ -6,3 +6,8 @@ lint:
 
 type:
     uv run mypy --strict src tests
+
+todo:
+    git grep "# TODO:" -- '*.py'
+    git grep "noqa" -- '*.py' | grep -v N802 | grep -v S101 
+    git grep "# type" -- '*.py'
