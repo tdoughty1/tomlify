@@ -26,7 +26,7 @@ class BaseLexer(ABC):
         lexer = s_lexer(self._source[self._current:])
 
         if delimiter != "":
-            n_chars, n_lines = lexer.lex(delimiter)
+            n_chars, n_lines = lexer.lex(delimiter)  # type: ignore[call-arg]
         else:
             n_chars, n_lines = lexer.lex()
 
