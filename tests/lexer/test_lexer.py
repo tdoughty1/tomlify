@@ -1,25 +1,26 @@
+# ruff: noqa: S101
+
 from tests.helpers import (
-    IDENTIFIER_TOKEN,
-    EQUAL_TOKEN,
-    STRING_TOKEN,
-    NEWLINE_TOKEN,
     COMMENT_TOKEN,
+    DOT_TOKEN,
     EOF_TOKEN,
-    DOT_TOKEN
+    EQUAL_TOKEN,
+    IDENTIFIER_TOKEN,
+    NEWLINE_TOKEN,
+    STRING_TOKEN,
 )
 from tomlify.lexer.lexer import Lexer
 
 
-
 def test_scan_comment() -> None:
-    input_string = '# This is a comment\n'
+    input_string = "# This is a comment\n"
     lexer = Lexer(input_string)
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        COMMENT_TOKEN('# This is a comment', ' This is a comment', 1),
+        COMMENT_TOKEN("# This is a comment", " This is a comment", 1),
         NEWLINE_TOKEN(1),
-        EOF_TOKEN(2)
+        EOF_TOKEN(2),
     ]
     assert actual_output == expected_output
 
@@ -29,58 +30,58 @@ def test_scan_key_value() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('key', 1),
+        IDENTIFIER_TOKEN("key", 1),
         EQUAL_TOKEN(1),
-        STRING_TOKEN('"value"', 'value', 1),
+        STRING_TOKEN('"value"', "value", 1),
         NEWLINE_TOKEN(1),
-        EOF_TOKEN(2)
+        EOF_TOKEN(2),
     ]
     assert actual_output == expected_output
 
 
 def test_basic_key() -> None:
-    input_string = 'key'
+    input_string = "key"
     lexer = Lexer(input_string)
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('key', 1),
-        EOF_TOKEN(1)
+        IDENTIFIER_TOKEN("key", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
 def test_basic_key_underscore() -> None:
-    input_string = 'key_underscore'
+    input_string = "key_underscore"
     lexer = Lexer(input_string)
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('key_underscore', 1),
-        EOF_TOKEN(1)
+        IDENTIFIER_TOKEN("key_underscore", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
 def test_basic_key_hyphen() -> None:
-    input_string = 'key-underscore'
+    input_string = "key-underscore"
     lexer = Lexer(input_string)
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('key-underscore', 1),
-        EOF_TOKEN(1)
+        IDENTIFIER_TOKEN("key-underscore", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
 def test_dotted_key() -> None:
-    input_string = 'key.value'
+    input_string = "key.value"
     lexer = Lexer(input_string)
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('key', 1),
+        IDENTIFIER_TOKEN("key", 1),
         DOT_TOKEN(1),
-        IDENTIFIER_TOKEN('value', 1),
-        EOF_TOKEN(1)
+        IDENTIFIER_TOKEN("value", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -90,10 +91,10 @@ def test_dotted_quoted_key() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('site', 1),
+        IDENTIFIER_TOKEN("site", 1),
         DOT_TOKEN(1),
-        STRING_TOKEN('"google.com"', 'google.com', 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN('"google.com"', "google.com", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -103,10 +104,10 @@ def test_dotted_spaced_key() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        IDENTIFIER_TOKEN('fruit', 1),
+        IDENTIFIER_TOKEN("fruit", 1),
         DOT_TOKEN(1),
-        IDENTIFIER_TOKEN('flavor', 1),
-        EOF_TOKEN(1)
+        IDENTIFIER_TOKEN("flavor", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -116,9 +117,9 @@ def test_basic_string() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN('"This is a string"', 'This is a string', 1),
+        STRING_TOKEN('"This is a string"', "This is a string", 1),
         NEWLINE_TOKEN(1),
-        EOF_TOKEN(2)
+        EOF_TOKEN(2),
     ]
     assert actual_output == expected_output
 
@@ -128,9 +129,9 @@ def test_basic_string_with_comment() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN('"This is a string # This is a comment"', 'This is a string # This is a comment', 1),
+        STRING_TOKEN(input_string.strip(), input_string.strip()[1:-1], 1),
         NEWLINE_TOKEN(1),
-        EOF_TOKEN(2)
+        EOF_TOKEN(2),
     ]
     assert actual_output == expected_output
 
@@ -140,8 +141,8 @@ def test_basic_string_dots() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN('"This is a string."', 'This is a string.', 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN('"This is a string."', "This is a string.", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -151,8 +152,8 @@ def test_basic_string_unicode() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN('"ʎǝʞ"', 'ʎǝʞ', 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN('"ʎǝʞ"', "ʎǝʞ", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -162,8 +163,8 @@ def test_basic_string_apostrophe() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN("'This is a string.'", 'This is a string.', 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN("'This is a string.'", "This is a string.", 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -173,8 +174,8 @@ def test_basic_string_multiline() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN(r'"This is a string.\n Split over lines."', 'This is a string.\\n Split over lines.', 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN(input_string, input_string[1:-1], 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -185,8 +186,8 @@ def test_basic_string_containing_string() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        STRING_TOKEN(r'''"I'm a string. \"You can quote me\"."''', input_string[1:-1], 1),
-        EOF_TOKEN(1)
+        STRING_TOKEN(input_string, input_string[1:-1], 1),
+        EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
 
@@ -199,6 +200,6 @@ def test_multiline_basic_string() -> None:
     actual_output = lexer.get_tokens()
     expected_output = [
         STRING_TOKEN(input_string, input_string[3:-3], 1),
-        EOF_TOKEN(2)
+        EOF_TOKEN(2),
     ]
     assert actual_output == expected_output

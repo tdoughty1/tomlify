@@ -18,12 +18,12 @@ class BinaryLexer(BaseLexer):
             if self._isAtEOF() or self._peek().isspace():
                 break
 
-            if c in '01_':
+            if c in "01_":
                 self._advance()
                 continue
 
         literal = int(self._source[self._start:self._current], 2)
-        self._addToken(TokenType.NUMBER, literal)
+        self._add_token(TokenType.NUMBER, literal)
         return (self._current, self._current_line - self._start_line)
 
 
@@ -37,12 +37,12 @@ class OctalLexer(BaseLexer):
             if self._isAtEOF() or self._peek().isspace():
                 break
 
-            if c in '01234567_':
+            if c in "01234567_":
                 self._advance()
                 continue
 
         literal = int(self._source[self._start:self._current], 8)
-        self._addToken(TokenType.NUMBER, literal)
+        self._add_token(TokenType.NUMBER, literal)
         return (self._current, self._current_line - self._start_line)
 
 class HexLexer(BaseLexer):
@@ -55,12 +55,12 @@ class HexLexer(BaseLexer):
             if self._isAtEOF() or self._peek().isspace():
                 break
 
-            if c in 'abcdefABCDEF0123456789_':
+            if c in "abcdefABCDEF0123456789_":
                 self._advance()
                 continue
 
         literal = int(self._source[self._start:self._current], 16)
-        self._addToken(TokenType.NUMBER, literal)
+        self._add_token(TokenType.NUMBER, literal)
         return (self._current, self._current_line - self._start_line)
 
 
@@ -75,26 +75,28 @@ class DecimalLexer(BaseLexer):
             if self._isAtEOF() or self._peek().isspace():
                 break
 
-            if c == '.':
+            if c == ".":
                 is_integer = False
                 if not (self._has_leading_digit() and self._has_trailing_digit()):
-                    raise ValueError("Invalid floating point input")
+                    msg = "Invalid floating point input"
+                    raise ValueError(msg)
                 self._advance()
                 continue
 
-            if c in '0123456789_':
+            if c in "0123456789_":
                 self._advance()
                 continue
 
-            if c == 'e':
+            if c == "e":
                 if is_integer:
-                    raise ValueError("Invalid floating point input")
+                    msg = "Invalid floating point input"
+                    raise ValueError(msg)
                 self._advance()
                 continue
 
         number_literal = self._source[self._start:self._current]
         literal: Literal = int(number_literal) if is_integer else float(number_literal)
-        self._addToken(TokenType.NUMBER, literal)
+        self._add_token(TokenType.NUMBER, literal)
         return (self._current, self._current_line - self._start_line)
 
     def _has_leading_digit(self) -> bool:
@@ -109,11 +111,14 @@ class NumberLexer(BaseLexer):
         prefix = self._peek() + self._peek(1)
 
         match prefix:
-            case '0x':
+            case "0x":
                 return self.call_sublexer(HexLexer)
-            case '0o':
+            case "0o":
                 return self.call_sublexer(OctalLexer)
-            case '0b':
+            case "0b":
                 return self.call_sublexer(BinaryLexer)
             case _:
                return self.call_sublexer(DecimalLexer)
+
+# TODO: Convert to custom exceptions for more detailed info
+# TODO: Add errors for bad hex, octal, binary numbers

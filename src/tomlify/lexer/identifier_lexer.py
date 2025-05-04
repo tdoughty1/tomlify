@@ -7,9 +7,9 @@ class IdentifierLexer(BaseLexer):
         while (self._isidentifier(self._peek())):
             self._advance()
 
-        self._addToken(TokenType.IDENTIFIER)
+        self._add_token(TokenType.IDENTIFIER)
         return (self._current, self._current_line - self._start_line)
 
     @staticmethod
     def _isidentifier(c: str) -> bool:
-        return c.isalnum() or c == '_' or c == '-'
+        return c.isalnum() or c in {"_", "-"}
