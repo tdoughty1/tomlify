@@ -28,4 +28,4 @@ jobs:
       - name: Lint the project
         run: just lint
       - name: Typecheck the project
-        run: just typecheck
+        run: just type
