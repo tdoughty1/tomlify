@@ -8,6 +8,9 @@ type:
     uv run mypy --strict src tests
 
 todo:
-    git grep "# TODO:" -- '*.py'
+    git grep "# TODO:" | grep -v grep
     git grep "noqa" -- '*.py' | grep -v N802 | grep -v S101 
     git grep "# type" -- '*.py'
+
+
+# TODO: convert to a cleaner script / external tool for managing TODO list
