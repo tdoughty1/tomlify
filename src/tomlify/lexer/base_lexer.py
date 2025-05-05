@@ -76,3 +76,4 @@ class BaseLexer(ABC):
         self._tokens.append(Token(type_, text, literal, self._start_line))
 
 # TODO: Add distinct string lexers for the literal string types
+# TODO: Allow peek to return list of characters

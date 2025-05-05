@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from datetime import date, datetime, time
 
 from tomlify.lexer.token_type import TokenType
 
-Literal = str | int | float
+Literal = str | int | float | bool | date | datetime | time
 
 @dataclass
 class Token:
