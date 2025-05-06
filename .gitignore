@@ -3,4 +3,6 @@
 
 __pycache__
 
+# Scratch files for development
 scratch.py
+tokens.txt
