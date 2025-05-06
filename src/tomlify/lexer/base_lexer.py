@@ -4,27 +4,27 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 from tomlify.lexer.exceptions import LexerEOFError
-from tomlify.lexer.token import Token
+from tomlify.lexer.lex_token import Token
 
 if TYPE_CHECKING:
-    from tomlify.lexer.token import Literal
+    from tomlify.lexer.lex_token import Literal
     from tomlify.lexer.token_type import TokenType
 
 ParseInfo = tuple[int, int]
 
 class BaseLexer(ABC):
 
-    def __init__(self, source: str) -> None:
+    def __init__(self, source: str, start_line: int = 1) -> None:
         self._source: str = source
         self._tokens: list[Token] = []
         self._start: int = 0
         self._current: int = 0
-        self._start_line: int = 1
-        self._current_line: int = 1
+        self._start_line: int = start_line
+        self._current_line: int = start_line
 
 
     def call_sublexer(self, s_lexer: type[BaseLexer], delimiter: str = "") -> ParseInfo:
-        lexer = s_lexer(self._source[self._current:])
+        lexer = s_lexer(self._source[self._current:], self._current_line)
 
         if delimiter != "":
             n_chars, n_lines = lexer.lex(delimiter)  # type: ignore[call-arg]
@@ -32,8 +32,8 @@ class BaseLexer(ABC):
             n_chars, n_lines = lexer.lex()
 
         self._current += n_chars
-        self._current_line += n_lines
         self._tokens.extend(lexer.get_tokens())
+        self._current_line += n_lines
 
         return (n_chars, self._current_line - self._start_line)
 
@@ -71,9 +71,15 @@ class BaseLexer(ABC):
             return "\0"
         return self._source[self._current + num]
 
-    def _add_token(self, type_: TokenType, literal: Literal | None = None) -> None:
+    def _add_token(
+            self, type_: TokenType,
+            literal: Literal | None = None,
+            line: int | None = None,
+        ) -> None:
+        if line is None:
+            line = self._start_line
         text = self._source[self._start:self._current]
-        self._tokens.append(Token(type_, text, literal, self._start_line))
+        self._tokens.append(Token(type_, text, literal, line))
 
 # TODO: Add distinct string lexers for the literal string types
 # TODO: Allow peek to return list of characters

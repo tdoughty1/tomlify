@@ -4,7 +4,7 @@ import pytest
 
 from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.exceptions import LexerEOFError
-from tomlify.lexer.token import Token
+from tomlify.lexer.lex_token import Token
 from tomlify.lexer.token_type import TokenType
 
 

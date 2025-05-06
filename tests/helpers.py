@@ -1,6 +1,6 @@
 # ruff: noqa: N802
 
-from tomlify.lexer.token import Literal, Token
+from tomlify.lexer.lex_token import Literal, Token
 from tomlify.lexer.token_type import TokenType
 
 

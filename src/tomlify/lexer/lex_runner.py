@@ -8,9 +8,8 @@ def run(source: str) -> None:
     lexer = Lexer(source)
     lexer.lex()
     tokens = lexer.get_tokens()
-    with Path.open(Path("tokens.txt"), "w") as f:
-        for token in tokens:
-            f.write(f"{token}\n")
+    for token in tokens:
+        print(f"{token}")  # noqa: T201
 
 def run_file(path: Path) -> None:
     with Path.open(path) as f:

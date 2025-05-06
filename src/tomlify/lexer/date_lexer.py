@@ -28,9 +28,9 @@ class DateLexer(BaseLexer):
         match RegexChecker(self._source):
             case DatePatterns.DATETIME_STR_PATTERN as m:
                 self._advance(len(m))
-                t_sep = m.group(4)
-                ms = m.group(8) + "%f" if m.group(8) else ""
-                z = any([m.group(10), m.group(11), m.group(12), m.group(13)])
+                t_sep = m.group(3)
+                ms = m.group(7) + "%f" if m.group(7) else ""
+                z = any([m.group(9), m.group(10), m.group(11), m.group(12)])
                 dt_format = f"%Y-%m-%d{t_sep}%H:%M:%S{ms}{'%z' if z else ''}"
                 literal = datetime.strptime(str(m), dt_format)
                 self._add_token(TokenType.DATE, literal)
@@ -43,7 +43,8 @@ class DateLexer(BaseLexer):
                 return (self._current, self._current_line - self._start_line)
             case DatePatterns.TIME_STR_PATTERN as m:
                 self._advance(len(m))
-                literal = datetime.strptime(str(m), "%H:%M:%S.%f")
+                ms = m.group(3) + "%f" if m.group(3) else ""
+                literal = datetime.strptime(str(m), f"%H:%M:%S{ms}")
                 time_literal = literal.time()
                 self._add_token(TokenType.DATE, time_literal)
                 return (self._current, self._current_line - self._start_line)

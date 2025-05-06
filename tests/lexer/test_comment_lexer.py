@@ -1,7 +1,7 @@
 # ruff: noqa: S101
 
 from tomlify.lexer.comment_lexer import CommentLexer
-from tomlify.lexer.token import Token
+from tomlify.lexer.lex_token import Token
 from tomlify.lexer.token_type import TokenType
 
 

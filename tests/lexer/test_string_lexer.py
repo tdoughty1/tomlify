@@ -3,8 +3,8 @@
 import pytest
 
 from tomlify.lexer.exceptions import UnterminatedStringError
+from tomlify.lexer.lex_token import Token
 from tomlify.lexer.string_lexer import MultilineStringLexer, StringLexer
-from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
 
 

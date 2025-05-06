@@ -3,7 +3,7 @@
 from datetime import date, datetime, time, timedelta, timezone
 
 from tomlify.lexer.date_lexer import DateLexer
-from tomlify.lexer.token import Token
+from tomlify.lexer.lex_token import Token
 from tomlify.lexer.token_type import TokenType
 
 

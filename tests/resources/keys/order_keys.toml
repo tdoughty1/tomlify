@@ -1,3 +1,5 @@
+# Use only for parsing tests
+
 # VALID BUT DISCOURAGED
 
 apple.type = "fruit"

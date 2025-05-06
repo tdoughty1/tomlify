@@ -4,9 +4,9 @@ from tomlify.lexer.base_lexer import BaseLexer
 from tomlify.lexer.comment_lexer import CommentLexer
 from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.identifier_lexer import IdentifierLexer
+from tomlify.lexer.lex_token import Token
 from tomlify.lexer.number_lexer import NumberLexer
 from tomlify.lexer.string_lexer import MultilineStringLexer, StringLexer
-from tomlify.lexer.token import Token
 from tomlify.lexer.token_type import TokenType
 
 TOKEN_TYPE_MAP = {
@@ -47,7 +47,7 @@ class Lexer(BaseLexer):
         self._tokens.append(Token(TokenType.EOF, "", None, self._current_line))
         return self._current, self._current_line - self._start_line
 
-    def _lextoken(self) -> None:
+    def _lextoken(self) -> None:  # noqa: C901,PLR0912
         c = self._peek()
         match c:
             case "#":
@@ -60,21 +60,21 @@ class Lexer(BaseLexer):
             case "."|"{"|"}"|":"|"="|","|"-"|"+":
                 self._advance()
                 token = TOKEN_TYPE_MAP[c]
-                self._add_token(token)
+                self._add_token(token, line=self._current_line)
             case "[" | "]":
                 if self._peek(1) == c:
                     self._advance(2)
                     token = TOKEN_TYPE_MAP[2*c]
-                    self._add_token(token)
+                    self._add_token(token, line=self._current_line)
                 else:
                     self._advance()
                     token = TOKEN_TYPE_MAP[c]
-                    self._add_token(token)
+                    self._add_token(token, line=self._current_line)
             case " ":
                 self._advance()
             case "\n"|"\r":
                 self._advance()
-                self._add_token(TokenType.NEWLINE)
+                self._add_token(TokenType.NEWLINE, line=self._current_line)
                 self._current_line += 1
             case _:
                 if c.isdigit():

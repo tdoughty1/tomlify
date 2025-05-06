@@ -1,11 +1,13 @@
+import re
 from typing import TYPE_CHECKING
 
 from tomlify.lexer.base_lexer import BaseLexer
+from tomlify.lexer.date_lexer import DateLexer
 from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.token_type import TokenType
 
 if TYPE_CHECKING:
-    from tomlify.lexer.token import Literal
+    from tomlify.lexer.lex_token import Literal
 
 
 class BinaryLexer(BaseLexer):
@@ -74,6 +76,10 @@ class HexLexer(BaseLexer):
 class DecimalLexer(BaseLexer):
     def lex(self) -> tuple[int, int]:
 
+        #TODO: Refactor to reduce line length
+        if re.findall(r"[0-9]{4,}-[0-9]{2}-[0-9]{2}", self._source) or re.findall(r"[0-9]{2}:[0-9]{2}:[0-9]{2}", self._source):  # noqa: E501
+            return self.call_sublexer(DateLexer)
+
         is_integer = True
 
         while True:
@@ -94,10 +100,14 @@ class DecimalLexer(BaseLexer):
                 self._advance()
                 continue
 
-            if c == "e":
+            if c.lower() == "e":
+                is_integer = False
+                self._advance()
+                continue
+
+            if c in "+-":
                 if is_integer:
-                    msg = "Invalid floating point input"
-                    raise InvalidCharacterError(msg)
+                    break
                 self._advance()
                 continue
 

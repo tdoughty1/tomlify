@@ -1,3 +1,5 @@
+# Use only for parsing tests
+
 # This makes the key "fruit" into a table.
 fruit.apple.smooth = true
 
