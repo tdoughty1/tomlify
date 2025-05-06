@@ -6,15 +6,15 @@ from typing import Any
 @dataclasses.dataclass
 class RegexChecker:
     string: str
-    match: re.Match[str] | None = None
-    endpos: int = 0
+    match: str | None = None
+    _groups: tuple[str | Any, ...] = ()
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, str):
             other = re.compile(other)
         if not isinstance(other, re.Pattern):
             raise NotImplementedError
-        match: re.Match[str] = other.match(self.string)
+        match = other.match(self.string)
         if match is None:
             return False
         self.match = match.string[match.start(): match.end()]
