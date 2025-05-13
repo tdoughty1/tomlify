@@ -7,7 +7,9 @@ authors = [
     { name = "Todd Doughty", email = "w.todd.doughty@gmail.com" }
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "typer>=0.15.3",
+]
 
 [build-system]
 requires = ["hatchling"]
