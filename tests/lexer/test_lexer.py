@@ -1,4 +1,5 @@
 # ruff: noqa: S101
+import math
 
 from tests.helpers import (
     COMMENT_TOKEN,
@@ -7,6 +8,7 @@ from tests.helpers import (
     DOUBLE_RIGHT_BRACKET_TOKEN,
     EOF_TOKEN,
     EQUAL_TOKEN,
+    FLOAT_TOKEN,
     IDENTIFIER_TOKEN,
     LEFT_BRACKET_TOKEN,
     MINUS_TOKEN,
@@ -217,7 +219,7 @@ def test_positive_infinity() -> None:
     actual_output = lexer.get_tokens()
     expected_output = [
         PLUS_TOKEN(1),
-        IDENTIFIER_TOKEN("inf", 1),
+        FLOAT_TOKEN("inf", float("inf")),
         EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
@@ -229,10 +231,16 @@ def test_negative_nan() -> None:
     actual_output = lexer.get_tokens()
     expected_output = [
         MINUS_TOKEN(1),
-        IDENTIFIER_TOKEN("nan", 1),
+        FLOAT_TOKEN("nan", float("nan")),
         EOF_TOKEN(1),
     ]
-    assert actual_output == expected_output
+    assert actual_output[0] == expected_output[0]
+    assert actual_output[2] == expected_output[2]
+    assert actual_output[1].type_ == expected_output[1].type_
+    assert actual_output[1].lexeme == expected_output[1].lexeme
+    assert actual_output[1].line == expected_output[1].line
+    assert isinstance(actual_output[1].literal, float)
+    assert math.isnan(actual_output[1].literal)
 
 def test_left_bracket() -> None:
     input_string = "["

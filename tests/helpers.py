@@ -42,3 +42,6 @@ def DOUBLE_LEFT_BRACKET_TOKEN(line: int) -> Token:
 
 def DOUBLE_RIGHT_BRACKET_TOKEN(line: int) -> Token:
     return Token(TokenType.DOUBLE_RIGHT_BRACKET, "]]", None, line)
+
+def FLOAT_TOKEN(value: str, literal: Literal) -> Token:
+    return Token(TokenType.NUMBER, value, literal, 1)

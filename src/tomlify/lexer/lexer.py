@@ -77,7 +77,15 @@ class Lexer(BaseLexer):
                 self._add_token(TokenType.NEWLINE, line=self._current_line)
                 self._current_line += 1
             case _:
-                if c.isdigit():
+                if c == "i" and self._peek(1) == "n" and self._peek(2) == "f":
+                    self._advance(3)
+                    line = self._current_line
+                    self._add_token(TokenType.NUMBER, literal = float("inf"), line=line)
+                elif c == "n" and self._peek(1) == "a" and self._peek(2) == "n":
+                    self._advance(3)
+                    line = self._current_line
+                    self._add_token(TokenType.NUMBER, literal = float("nan"), line=line)
+                elif c.isdigit():
                     self.call_sublexer(NumberLexer)
                 elif c.isalpha():
                     self.call_sublexer(IdentifierLexer)
