@@ -25,7 +25,7 @@ def run_file(path: Path, lex_only: bool) -> None:
 
 lex_option = typer.Option(False, "--lex", help="Only Run Lexer on input file")
 
-def main(path: str, lex_only: bool = lex_option):
+def main(path: str, lex_only: bool = lex_option) -> None:
     run_file(Path(path), lex_only)
 
 
