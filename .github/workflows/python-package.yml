@@ -23,8 +23,8 @@ jobs:
       - run: uv run python --version
       - name: Install the project
         run: uv sync --locked --all-extras --dev
-      - name: Run Unit tests
-        run: just test 
+      - name: Run All tests
+        run: just fulltest 
       - name: Lint the project
         run: just lint
       - name: Typecheck the project

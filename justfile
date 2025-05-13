@@ -2,6 +2,9 @@ run target:
     uv run src/tomlify/lexer/lex_runner.py {{target}}
 
 test:
+    uv run pytest -vv --ignore=tests/integration
+
+fulltest:
     uv run pytest -vv
 
 lint:
