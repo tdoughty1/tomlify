@@ -1,10 +1,8 @@
 # ruff: noqa: E501,S101,S603
 
 from pathlib import Path
-from subprocess import PIPE, Popen
 
-RUNNER_FILE = "src/tomlify/lexer/lex_runner.py"
-RESOURCE_PATH = "tests/resources"
+from tests.integration.helpers import RESOURCE_PATH, run_test
 
 def test_comments_toml() -> None:
 
@@ -24,12 +22,10 @@ def test_comments_toml() -> None:
     ]
 
     test_file = Path(RESOURCE_PATH) / "comments" / "comments.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens

@@ -1,10 +1,9 @@
 # ruff: noqa: E501, S101, S603
 
 from pathlib import Path
-from subprocess import PIPE, Popen
 
-RUNNER_FILE = "src/tomlify/lexer/lex_runner.py"
-RESOURCE_PATH = "tests/resources"
+from tests.integration.helpers import RESOURCE_PATH, run_test
+
 
 def test_bare_key_toml() -> None:
 
@@ -29,13 +28,11 @@ def test_bare_key_toml() -> None:
     ]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "bare_keys.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
 
@@ -69,13 +66,11 @@ def test_dotted_keys_toml() -> None:
     ]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "dotted_keys.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
 
@@ -107,13 +102,11 @@ def test_dotted_keys_2_toml() -> None:
 ]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "dotted_keys_2.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
 
@@ -145,13 +138,11 @@ def test_duplicate_keys_toml() -> None:
 ]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "duplicate_keys.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
 
@@ -166,13 +157,11 @@ def test_numeric_keys_toml() -> None:
     ]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "numeric_keys.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
 
@@ -217,12 +206,10 @@ def test_quoted_keys_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=10)"]
 
     test_file = Path(RESOURCE_PATH) / "keys" / "quoted_keys.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    out, err, return_code = run_test(test_file)
 
     actual_tokens = out.splitlines()
 
-    assert process.returncode == 0
+    assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
