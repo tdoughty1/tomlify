@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 
 from tomlify.lexer.lexer import Lexer
+from tomlify.parser.parser import Parser
 
 
 def run(source: str) -> None:
@@ -9,7 +10,11 @@ def run(source: str) -> None:
     lexer.lex()
     tokens = lexer.get_tokens()
     for token in tokens:
-        print(f"{token}")  # noqa: T201
+        print(f"{token}")
+    #parser = Parser(tokens)
+    #expressions = parser.parse()
+    #for expression in expressions:
+        #print(expression) # noqa: T201
 
 def run_file(path: Path) -> None:
     with Path.open(path) as f:
@@ -29,3 +34,4 @@ if __name__ == "__main__":
     main(Path(sys.argv[1]))
 
 # TODO: Move to typer command line functionality
+# TODO: Allow command line argument to just run lexer
