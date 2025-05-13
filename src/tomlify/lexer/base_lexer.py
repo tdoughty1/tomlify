@@ -72,7 +72,8 @@ class BaseLexer(ABC):
         return self._source[self._current + num]
 
     def _add_token(
-            self, type_: TokenType,
+            self,
+            type_: TokenType,
             literal: Literal | None = None,
             line: int | None = None,
         ) -> None:
