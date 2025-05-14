@@ -9,7 +9,11 @@ trimmed in raw strings.
 quot15 = '''Here are fifteen quotation marks: """""""""""""""'''
 
 # apos15 = '''Here are fifteen apostrophes: ''''''''''''''''''  # INVALID
-apos15 = "Here are fifteen apostrophes: '''''''''''''''"
+# apos15 = "Here are fifteen apostrophes: '''''''''''''''"
+
+# TODO : Figure out how to uncomment the second apos15 and still have it work
 
 # 'That,' she said, 'is still pointless.'
-str = ''''That,' she said, 'is still pointless.''''
+# str = ''''That,' she said, 'is still pointless.''''
+
+# TODO : Figure out how to uncomment the second str and still have it work

@@ -85,7 +85,10 @@ class DecimalLexer(BaseLexer):
         while True:
             c = self._peek()
 
-            if self._isAtEOF() or self._peek().isspace():
+            if self._isAtEOF() or self._peek().isspace() or self._peek() == ",":
+                break
+
+            if c in {",", "]"}:
                 break
 
             if c == ".":

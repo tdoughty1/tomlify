@@ -4,6 +4,7 @@ from pathlib import Path
 
 from tests.integration.helpers import RESOURCE_PATH, run_test
 
+
 def test_floats_toml() -> None:
 
     expected_tokens = [

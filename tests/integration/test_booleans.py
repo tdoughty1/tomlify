@@ -4,6 +4,7 @@ from pathlib import Path
 
 from tests.integration.helpers import RESOURCE_PATH, run_test
 
+
 def test_booleans_toml() -> None:
 
     expected_tokens = [
@@ -26,4 +27,3 @@ def test_booleans_toml() -> None:
     assert return_code == 0
     assert err == ""
     assert actual_tokens == expected_tokens
-

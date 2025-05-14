@@ -1,3 +1,5 @@
+# ruff: noqa: S603
+
 from pathlib import Path
 from subprocess import PIPE, Popen
 

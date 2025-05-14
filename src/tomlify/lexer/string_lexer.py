@@ -15,7 +15,7 @@ class StringLexer(BaseLexer):
                 raise UnterminatedStringError(msg)
 
             # Check for escaped character
-            if self._peek() == "\\":
+            if self._peek() == "\\" and delimiter == '"':
                 self._advance(2)
                 continue
 
@@ -43,7 +43,7 @@ class MultilineStringLexer(BaseLexer):
                 raise UnterminatedStringError(msg)
 
             # Check for escaped character
-            if self._peek() == "\\":
+            if self._peek() == "\\" and delimiter == '"':
                 self._advance(2)
                 continue
 
