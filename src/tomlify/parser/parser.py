@@ -121,21 +121,21 @@ class Parser:
             return self._previous()
         return None
 
-    def _val(self) -> Token:
+    def _val(self) -> Value | None:
         if self._match(TokenType.STRING):
-            return self._previous()
+            return Value(self._previous())
         if self._match(TokenType.BOOLEAN):
-            return self._previous()
+            return Value(self._previous())
         if self._match(TokenType.DATE):
             self._advance()
-            return self._tokens[self._current - 1]
+            return Value(self._previous())
         if self._match(TokenType.NUMBER):
             self._advance()
-            return self._tokens[self._current - 1]
+            return Value(self._previous())
         if self._match(TokenType.NUMBER):
             self._advance()
-            return self._tokens[self._current - 1]
-        return self._tokens[self._current - 1]
+            return Value(self._previous())
+        raise ValueError
 
     def _array(self) -> Array | None:  # noqa: C901
         if self._peek().type_ != TokenType.LEFT_BRACKET:

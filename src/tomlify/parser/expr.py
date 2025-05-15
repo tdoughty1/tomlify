@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class KeyValue:
-    def __init__(self, key: Key, value: Token) -> None:
+    def __init__(self, key: Key, value: Value) -> None:
         self.key = key
         self.value = value
 
