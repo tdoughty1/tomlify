@@ -37,3 +37,14 @@ class InvalidInlineTableError(ValueError):
 
     def __str__(self) -> str:
         return f"InvalidInlineTableError: {self.message}"
+
+
+class InvalidFormattingError(ValueError):
+    """Invalid formatting."""
+
+    def __init__(self, message: str) -> None:
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f"InvalidFormattingError: {self.message}"

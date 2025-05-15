@@ -4,6 +4,7 @@ from tomlify.lexer.token_type import TokenType
 from tomlify.parser.exceptions import (
     InvalidArrayError,
     InvalidArrayTableError,
+    InvalidFormattingError,
     InvalidInlineTableError,
     InvalidTableError,
 )
@@ -23,7 +24,7 @@ class Parser:
         self._tokens: list[Token] = tokens
         self._current = 0
 
-    def parse(self) -> list[KeyValue]:
+    def parse(self) -> list[KeyValue|Table]:
         return self._toml()
 
     def _advance(self, num: int = 1) -> None:
@@ -54,8 +55,8 @@ class Parser:
             return False
         return self._peek().type_ == type_
 
-    def _toml(self) -> list[KeyValue]:
-        expressions: list[KeyValue] = []
+    def _toml(self) -> list[KeyValue|Table]:
+        expressions = []
         initial_expression = self._expression()
         if initial_expression:
             expressions.append(initial_expression)
@@ -65,13 +66,20 @@ class Parser:
                 expressions.append(expression)
         return expressions
 
-    def _expression(self) -> KeyValue | None:
+    def _expression(self) -> KeyValue| Table | None:
         if self._match(TokenType.NEWLINE):
             return None
         if self._match(TokenType.COMMENT):
             return None
 
-        return self._key_val()
+        if key_val := self._key_val():
+            return key_val
+
+        if table := self._table():
+            return table
+
+        msg = "Invalid TOML Expression"
+        raise InvalidFormattingError(msg)
 
     def _key_val(self) -> KeyValue | None:
         key = self._key()
