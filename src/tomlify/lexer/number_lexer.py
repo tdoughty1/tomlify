@@ -74,7 +74,7 @@ class HexLexer(BaseLexer):
 
 
 class DecimalLexer(BaseLexer):
-    def lex(self) -> tuple[int, int]:
+    def lex(self) -> tuple[int, int]:  # noqa: C901
 
         #TODO: Refactor to reduce line length
         if re.findall(r"[0-9]{4,}-[0-9]{2}-[0-9]{2}", self._source) or re.findall(r"[0-9]{2}:[0-9]{2}:[0-9]{2}", self._source):  # noqa: E501
