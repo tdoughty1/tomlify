@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from tests.integration.helpers import RESOURCE_PATH, run_test
+from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
 
 
 def test_base_integers_toml() -> None:
