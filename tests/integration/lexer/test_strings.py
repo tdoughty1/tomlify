@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_basic_strings_toml() -> None:
 
@@ -15,8 +16,8 @@ def test_basic_strings_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=2)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "strings" / "basic_strings.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "strings" / "basic_strings.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -48,8 +49,8 @@ def test_literal_strings_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=6)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "strings" / "literal_strings.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "strings" / "literal_strings.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -121,8 +122,8 @@ def test_multiline_strings_toml() -> None:
 
     ]
 
-    test_file = Path(RESOURCE_PATH) / "strings" / "multiline_strings.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "strings" / "multiline_strings.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -165,8 +166,8 @@ def test_multiline_literal_strings_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=20)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "strings" / "multiline_literal_strings.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "strings" / "multiline_literal_strings.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 

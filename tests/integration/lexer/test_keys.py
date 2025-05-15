@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_bare_key_toml() -> None:
 
@@ -27,8 +28,8 @@ def test_bare_key_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=5)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "bare_keys.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "bare_keys.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -65,8 +66,8 @@ def test_dotted_keys_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=5)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "dotted_keys.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "dotted_keys.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -101,8 +102,8 @@ def test_dotted_keys_2_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=4)",
 ]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "dotted_keys_2.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "dotted_keys_2.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -137,8 +138,8 @@ def test_duplicate_keys_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=8)",
 ]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "duplicate_keys.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "duplicate_keys.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -156,8 +157,8 @@ def test_numeric_keys_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=2)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "numeric_keys.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "numeric_keys.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -205,8 +206,8 @@ def test_quoted_keys_toml() -> None:
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=9)",
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=10)"]
 
-    test_file = Path(RESOURCE_PATH) / "keys" / "quoted_keys.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "keys" / "quoted_keys.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 

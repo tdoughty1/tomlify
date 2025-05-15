@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_arrays_toml() -> None:
     expected_tokens = [
@@ -78,8 +79,8 @@ def test_arrays_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=6)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "arrays" / "arrays.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "arrays" / "arrays.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -134,8 +135,8 @@ def test_mixed_arrays_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=7)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "arrays" / "mixed_arrays.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "arrays" / "mixed_arrays.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -175,8 +176,8 @@ def test_multiline_arrays_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=9)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "arrays" / "multiline_arrays.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "arrays" / "multiline_arrays.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 

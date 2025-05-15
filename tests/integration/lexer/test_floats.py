@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_floats_toml() -> None:
 
@@ -51,8 +52,8 @@ def test_floats_toml() -> None:
 
     ]
 
-    test_file = Path(RESOURCE_PATH) / "floats" / "floats.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "floats" / "floats.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -68,8 +69,8 @@ def test_invalid_floats_toml() -> None:
     expected_tokens = [
     ]
 
-    test_file = Path(RESOURCE_PATH) / "floats" / "invalid_floats.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_file)]
+    test_path = Path(RESOURCE_PATH) / "floats" / "invalid_floats.toml"
+    command = ["uv", "run", RUNNER_FILE, str(test_path)]
     process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
     out, err = process.communicate()
 
@@ -126,8 +127,8 @@ def test_special_floats_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=10)",
 ]
 
-    test_file = Path(RESOURCE_PATH) / "floats" / "special_floats.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "floats" / "special_floats.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -145,8 +146,8 @@ def test_underscore_floats_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=2)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "floats" / "underscore_floats.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "floats" / "underscore_floats.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 

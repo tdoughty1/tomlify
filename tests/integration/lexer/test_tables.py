@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_tables_toml() -> None:
     expected_tokens = [
@@ -40,8 +41,8 @@ def test_tables_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=10)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "tables" / "tables.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "tables" / "tables.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -89,8 +90,8 @@ def test_inline_tables_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=4)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "tables" / "inline_tables.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "tables" / "inline_tables.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 

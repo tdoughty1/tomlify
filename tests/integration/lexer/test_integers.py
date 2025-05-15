@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
-from tests.integration.lexer.helpers import RESOURCE_PATH, run_test
+from tests.integration.runner import RESOURCE_PATH, run_test
 
+SCRIPT_PATH = Path("src/tomlify/lexer/lex_runner.py")
 
 def test_base_integers_toml() -> None:
 
@@ -45,8 +46,8 @@ def test_base_integers_toml() -> None:
 
     ]
 
-    test_file = Path(RESOURCE_PATH) / "integers" / "base_integers.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "integers" / "base_integers.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -79,8 +80,8 @@ def test_integers_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=5)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "integers" / "integers.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "integers" / "integers.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
@@ -113,8 +114,8 @@ def test_base_underscore_integers_toml() -> None:
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=5)",
     ]
 
-    test_file = Path(RESOURCE_PATH) / "integers" / "underscore_integers.toml"
-    out, err, return_code = run_test(test_file)
+    test_path = Path(RESOURCE_PATH) / "integers" / "underscore_integers.toml"
+    out, err, return_code = run_test(SCRIPT_PATH, test_path)
 
     actual_tokens = out.splitlines()
 
