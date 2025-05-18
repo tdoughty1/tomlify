@@ -1,5 +1,5 @@
 name: Tomlify Unit Tests
-run-name: ${{ github.actor }} is running unit tests
+run-name: Code Pushed - ${{ github.actor }} is deploying changes
 on: [push]
 jobs:
   Basic-Unit-Tests:
@@ -35,6 +35,8 @@ jobs:
 
   Build-Package:
     name: Build distribution 📦
+    needs:
+    - Basic-Unit-Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -88,7 +90,7 @@ jobs:
 
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/<package-name>
+      url: https://test.pypi.org/p/tomlify
 
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
