@@ -62,8 +62,7 @@ jobs:
         path: dist/
 
   Publish-to-PyPI:
-    name: >-
-      Publish Python 🐍 distribution 📦 to PyPI
+    name: Publish Python 🐍 distribution 📦 to PyPI
     if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
     needs:
     - Build-Package
