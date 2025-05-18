@@ -63,17 +63,13 @@ def test_floats_toml() -> None:
 
 def test_invalid_floats_toml() -> None:
 
-    expected_tokens = [
-    ]
-
     test_path = Path(RESOURCE_PATH) / "floats" / "invalid_floats.toml"
     _, err, return_code = run_test(SCRIPT_PATH, test_path)
 
-    print(err.splitlines()[0])
-    err = err.splitlines()[0]    
+    err = err.splitlines()[0]
 
     assert return_code == 1
-    assert err == 'InvalidCharacterError: Invalid floating point input'
+    assert err == "InvalidCharacterError: Invalid floating point input"
 
 
 def test_special_floats_toml() -> None:
