@@ -3,12 +3,17 @@ from pathlib import Path
 
 import typer
 
+from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.lexer import Lexer
 
 
 def run(source: str) -> None:
     lexer = Lexer(source)
-    lexer.lex()
+    try:
+        lexer.lex()
+    except InvalidCharacterError as e:
+        typer.echo(e, err=True)
+        raise
     tokens = lexer.get_tokens()
     for token in tokens:
         typer.echo(f"{token}")

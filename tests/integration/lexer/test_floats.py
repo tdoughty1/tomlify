@@ -60,23 +60,20 @@ def test_floats_toml() -> None:
 
 
 # TODO: Manage better error management in lexer
-"""
+
 def test_invalid_floats_toml() -> None:
 
     expected_tokens = [
     ]
 
     test_path = Path(RESOURCE_PATH) / "floats" / "invalid_floats.toml"
-    command = ["uv", "run", RUNNER_FILE, str(test_path)]
-    process = Popen(command, stdout=PIPE, stderr=PIPE, text=True)
-    out, err = process.communicate()
+    _, err, return_code = run_test(SCRIPT_PATH, test_path)
 
-    actual_tokens = out.splitlines()
+    print(err.splitlines()[0])
+    err = err.splitlines()[0]    
 
-    assert process.returncode == 0
-    assert err == ""
-    assert actual_tokens == expected_tokens
-"""
+    assert return_code == 1
+    assert err == 'InvalidCharacterError: Invalid floating point input'
 
 
 def test_special_floats_toml() -> None:
