@@ -1,3 +1,5 @@
+# ruff: noqa: PLR0912
+
 import re
 from typing import TYPE_CHECKING
 
@@ -81,8 +83,11 @@ class DecimalLexer(BaseLexer):
             return self.call_sublexer(DateLexer)
 
         is_integer = True
+        is_start = -1
 
         while True:
+            is_start += 1
+
             c = self._peek()
 
             if self._isAtEOF() or self._peek().isspace() or self._peek() == ",":
@@ -99,6 +104,16 @@ class DecimalLexer(BaseLexer):
                 self._advance()
                 continue
 
+            if c == "i" and self._peek(1) == "n" and self._peek(2) == "f":
+                is_integer = False
+                self._advance(3)
+                continue
+
+            if c == "n" and self._peek(1) == "a" and self._peek(2) == "n":
+                is_integer = False
+                self._advance(3)
+                continue
+
             if c in "0123456789_":
                 self._advance()
                 continue
@@ -109,6 +124,9 @@ class DecimalLexer(BaseLexer):
                 continue
 
             if c in "+-":
+                if not is_start:
+                    self._advance()
+                    continue
                 if is_integer:
                     break
                 self._advance()

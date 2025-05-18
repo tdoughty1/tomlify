@@ -162,9 +162,11 @@ def test_array_multiline() -> None:
         TestToken["ARRAY_END"],
     ]
     parser = Parser(input_tokens)
+    actual_array = parser._array()
     test_value = Value(TestToken["STRING_KEY"])
     expected_array = Array(test_value, test_value, test_value)
-    assert parser._array() == expected_array
+
+    assert actual_array == expected_array
 
 def test_array_nested() -> None:
     input_tokens = [
@@ -187,6 +189,7 @@ def test_array_nested() -> None:
     test_value = Value(TestToken["STRING_KEY"])
     expected_array = Array(test_value, Array(test_value, test_value))
     assert parser._array() == expected_array
+
 
 def test_array_table() -> None:
     input_tokens = [
@@ -243,4 +246,5 @@ def test_inline_table() -> None:
         Value(TestToken["STRING_KEY"]),
     )
     expected_table = InlineTable(test_key_value, test_key_value)
-    assert parser._inline_table() == expected_table
+    actual_table = parser._inline_table()
+    assert actual_table == expected_table

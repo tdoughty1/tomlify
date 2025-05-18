@@ -190,9 +190,7 @@ def test_quoted_keys_toml() -> None:
         """Token(type_=<TokenType.STRING: 'STRING'>, lexeme='"value"', literal='value', line=5)""",
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=5)",
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=6)",
-        "Token(type_=<TokenType.EQUAL: 'EQUAL'>, lexeme='=', literal=None, line=7)",
-        """Token(type_=<TokenType.STRING: 'STRING'>, lexeme='"no key name"', literal='no key name', line=7)""",
-        "Token(type_=<TokenType.COMMENT: 'COMMENT'>, lexeme='# INVALID', literal=' INVALID', line=7)",
+        'Token(type_=<TokenType.COMMENT: \'COMMENT\'>, lexeme=\'# = "no key name"  # INVALID\', literal=\' = "no key name"  # INVALID\', line=7)',
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=7)",
         """Token(type_=<TokenType.STRING: 'STRING'>, lexeme='""', literal='', line=8)""",
         "Token(type_=<TokenType.EQUAL: 'EQUAL'>, lexeme='=', literal=None, line=8)",
@@ -204,7 +202,13 @@ def test_quoted_keys_toml() -> None:
         """Token(type_=<TokenType.STRING: 'STRING'>, lexeme="'blank'", literal='blank', line=9)""",
         "Token(type_=<TokenType.COMMENT: 'COMMENT'>, lexeme='# VALID but discouraged', literal=' VALID but discouraged', line=9)",
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=9)",
-        "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=10)"]
+        "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=10)",
+        "Token(type_=<TokenType.COMMENT: 'COMMENT'>, lexeme='# TODO Fix Commented "
+        "Invalid code', literal=' TODO Fix Commented Invalid code', line=11)",
+        "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, "
+        "line=11)",
+        "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=12)"]
+
 
     test_path = Path(RESOURCE_PATH) / "keys" / "quoted_keys.toml"
     out, err, return_code = run_test(SCRIPT_PATH, test_path)

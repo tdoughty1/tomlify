@@ -61,8 +61,7 @@ def test_integers_toml() -> None:
     expected_tokens = [
         "Token(type_=<TokenType.IDENTIFIER: 'IDENTIFIER'>, lexeme='int1', literal=None, line=1)",
         "Token(type_=<TokenType.EQUAL: 'EQUAL'>, lexeme='=', literal=None, line=1)",
-        "Token(type_=<TokenType.PLUS: 'PLUS'>, lexeme='+', literal=None, line=1)",
-        "Token(type_=<TokenType.NUMBER: 'NUMBER'>, lexeme='99', literal=99, line=1)",
+        "Token(type_=<TokenType.NUMBER: 'NUMBER'>, lexeme='+99', literal=99, line=1)",
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=1)",
         "Token(type_=<TokenType.IDENTIFIER: 'IDENTIFIER'>, lexeme='int2', literal=None, line=2)",
         "Token(type_=<TokenType.EQUAL: 'EQUAL'>, lexeme='=', literal=None, line=2)",
@@ -74,8 +73,7 @@ def test_integers_toml() -> None:
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=3)",
         "Token(type_=<TokenType.IDENTIFIER: 'IDENTIFIER'>, lexeme='int4', literal=None, line=4)",
         "Token(type_=<TokenType.EQUAL: 'EQUAL'>, lexeme='=', literal=None, line=4)",
-        "Token(type_=<TokenType.MINUS: 'MINUS'>, lexeme='-', literal=None, line=4)",
-        "Token(type_=<TokenType.NUMBER: 'NUMBER'>, lexeme='17', literal=17, line=4)",
+        "Token(type_=<TokenType.NUMBER: 'NUMBER'>, lexeme='-17', literal=-17, line=4)",
         "Token(type_=<TokenType.NEWLINE: 'NEWLINE'>, lexeme='\\n', literal=None, line=4)",
         "Token(type_=<TokenType.EOF: 'EOF'>, lexeme='', literal=None, line=5)",
     ]

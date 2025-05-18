@@ -2,7 +2,6 @@
 from tomlify.lexer.lex_token import Token
 from tomlify.lexer.token_type import TokenType
 from tomlify.parser.exceptions import (
-    InvalidArrayError,
     InvalidArrayTableError,
     InvalidFormattingError,
     InvalidInlineTableError,
@@ -60,23 +59,21 @@ class Parser:
         initial_expression = self._expression()
         if initial_expression:
             expressions.append(initial_expression)
-        while self._match(TokenType.NEWLINE) and not self._isAtEnd():
+        while not self._isAtEnd():
             expression = self._expression()
             if expression:
                 expressions.append(expression)
         return expressions
 
     def _expression(self) -> KeyValue| Table | None:
-        if self._match(TokenType.NEWLINE):
-            return None
         if self._match(TokenType.COMMENT):
             return None
-
-        if key_val := self._key_val():
-            return key_val
-
+        if self._match(TokenType.NEWLINE):
+            return None
         if table := self._table():
             return table
+        if key_val := self._key_val():
+            return key_val
 
         msg = "Invalid TOML Expression"
         raise InvalidFormattingError(msg)
@@ -84,8 +81,8 @@ class Parser:
     def _key_val(self) -> KeyValue | None:
         key = self._key()
         sep = self._key_val_sep()
-        value = self._val()
-        if key and sep and value:
+        value = self._value()
+        if key is not None and sep is not None and value is not None:
             return KeyValue(key, value)
         return None
 
@@ -119,7 +116,7 @@ class Parser:
         return None
 
     def _unquoted_key(self) -> Key | None:
-        if self._match(TokenType.IDENTIFIER):
+        if self._match(TokenType.IDENTIFIER) or self._match(TokenType.NUMBER):
             token = self._previous()
             return Key(token)
         return None
@@ -129,68 +126,57 @@ class Parser:
             return self._previous()
         return None
 
-    def _val(self) -> Value | None:
-        if self._match(TokenType.STRING):
+    def _value(self) -> Value | None:
+        base_values = [
+            TokenType.STRING,
+            TokenType.BOOLEAN,
+            TokenType.DATE,
+            TokenType.NUMBER,
+        ]
+        if self._match(*base_values):
             return Value(self._previous())
-        if self._match(TokenType.BOOLEAN):
-            return Value(self._previous())
-        if self._match(TokenType.DATE):
-            self._advance()
-            return Value(self._previous())
-        if self._match(TokenType.NUMBER):
-            self._advance()
-            return Value(self._previous())
-        if self._match(TokenType.NUMBER):
-            self._advance()
-            return Value(self._previous())
-        raise ValueError
+        if array := self._array() :
+            return array
+        # Handle Empty Array
+        if array == Array():
+            return array
+        if inline_table := self._inline_table():
+            return inline_table
+        return None
 
-    def _array(self) -> Array | None:  # noqa: C901
-        if self._peek().type_ != TokenType.LEFT_BRACKET:
+    def _array(self) -> Array | None:
+        if not self._match(TokenType.LEFT_BRACKET):
             return None
-        self._advance()
-
-        elements = Array()
-        while True:
-            # Handle nested array
-            if self._peek().type_ == TokenType.LEFT_BRACKET:
-                array = self._array()
-                if array:
-                    elements.append(array)
-                else:
-                    msg = "Invalid Nested Array Formatting"
-                    raise InvalidArrayError(msg)
-                continue
-
-            # Handles case of trailing comma or newline in array list
-            if self._match(TokenType.RIGHT_BRACKET):
-                break
-
-            if self._match(TokenType.NEWLINE):
-                continue
-
+        values = Array()
+        while not self._match(TokenType.RIGHT_BRACKET):
             if self._match(TokenType.COMMENT):
                 continue
-
-            # Handles no trailing comma case in array list
-            if self._peek(1).type_ == TokenType.RIGHT_BRACKET:
-                elements.append(Value(self._tokens[self._current]))
-                self._advance(2)
-                break
-
-            if self._peek(1).type_ == TokenType.NEWLINE:
-                elements.append(Value(self._tokens[self._current]))
-                self._advance(2)
+            if self._match(TokenType.NEWLINE):
                 continue
+            new_values = self._array_values()
+            if new_values:
+                values.extend(new_values)
 
-            if self._peek(1).type_ == TokenType.COMMA:
-                elements.append(Value(self._tokens[self._current]))
-                self._advance(2)
-                continue
-            msg = "Invalid Array Formatting"
-            raise InvalidArrayError(msg)
+        return values
 
-        return Array(*elements)
+    def _array_values(self) -> list[Value] | None:
+        values = []
+        if self._match(TokenType.COMMENT, TokenType.NEWLINE):
+            pass
+        value = self._value()
+        if value:
+            values.append(value)
+        if self._match(TokenType.COMMENT, TokenType.NEWLINE):
+            pass
+        if self._match(TokenType.COMMA):
+            pass
+        if self._peek().type_ == TokenType.RIGHT_BRACKET:
+            return values
+        new_values = self._array_values()
+        if new_values:
+            values.extend(new_values)
+        return values
+
 
     def _table(self) -> Table | None:
         if std_table := self._std_table():
@@ -198,7 +184,6 @@ class Parser:
         if array_table := self._array_table():
             return array_table
         return None
-
 
     def _std_table(self) -> Table | None:
         if not self._match(TokenType.LEFT_BRACKET):
@@ -223,7 +208,6 @@ class Parser:
             msg = "Invalid Array Table Formatting"
             raise InvalidArrayTableError(msg)
         return ArrayTable(key)
-
 
     def _inline_table(self) -> InlineTable | None:
         if not self._match(TokenType.LEFT_BRACE):

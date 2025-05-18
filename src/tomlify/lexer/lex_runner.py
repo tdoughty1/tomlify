@@ -4,7 +4,6 @@ from pathlib import Path
 import typer
 
 from tomlify.lexer.lexer import Lexer
-from tomlify.parser.parser import Parser
 
 
 def run(source: str) -> None:
@@ -20,7 +19,6 @@ def run_file(path: Path) -> None:
 
 def main(path: str) -> None:
     run_file(Path(path))
-
 
 if __name__ == "__main__":
     typer.run(main)

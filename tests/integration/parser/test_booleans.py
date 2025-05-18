@@ -1,3 +1,5 @@
+# ruff: noqa: S101
+
 from pathlib import Path
 
 from tests.integration.runner import RESOURCE_PATH, run_test
@@ -5,10 +7,10 @@ from tests.integration.runner import RESOURCE_PATH, run_test
 SCRIPT_PATH = Path("src/tomlify/parser/parse_runner.py")
 
 def test_parse_boolean_toml() -> None:
-    
+
     expected_exprs = [
-        'KeyValue(bool1 = True)',
-        'KeyValue(bool2 = False)',
+        "KeyValue(bool1 = True)",
+        "KeyValue(bool2 = False)",
     ]
 
     test_path = Path(RESOURCE_PATH) / "booleans" / "booleans.toml"

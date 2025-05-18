@@ -57,7 +57,9 @@ class Lexer(BaseLexer):
                     self.call_sublexer(MultilineStringLexer, delimiter=c)
                 else:
                     self.call_sublexer(StringLexer, delimiter=c)
-            case "."|"{"|"}"|":"|"="|","|"-"|"+":
+            case "-"|"+":
+                self.call_sublexer(NumberLexer)
+            case "."|"{"|"}"|":"|"="|",":
                 self._advance()
                 token = TOKEN_TYPE_MAP[c]
                 self._add_token(token, line=self._current_line)

@@ -11,9 +11,7 @@ from tests.helpers import (
     FLOAT_TOKEN,
     IDENTIFIER_TOKEN,
     LEFT_BRACKET_TOKEN,
-    MINUS_TOKEN,
     NEWLINE_TOKEN,
-    PLUS_TOKEN,
     RIGHT_BRACKET_TOKEN,
     STRING_TOKEN,
 )
@@ -218,8 +216,7 @@ def test_positive_infinity() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        PLUS_TOKEN(1),
-        FLOAT_TOKEN("inf", float("inf")),
+        FLOAT_TOKEN("+inf", float("+inf")),
         EOF_TOKEN(1),
     ]
     assert actual_output == expected_output
@@ -230,17 +227,15 @@ def test_negative_nan() -> None:
     lexer.lex()
     actual_output = lexer.get_tokens()
     expected_output = [
-        MINUS_TOKEN(1),
-        FLOAT_TOKEN("nan", float("nan")),
+        FLOAT_TOKEN("-nan", float("-nan")),
         EOF_TOKEN(1),
     ]
-    assert actual_output[0] == expected_output[0]
-    assert actual_output[2] == expected_output[2]
-    assert actual_output[1].type_ == expected_output[1].type_
-    assert actual_output[1].lexeme == expected_output[1].lexeme
-    assert actual_output[1].line == expected_output[1].line
-    assert isinstance(actual_output[1].literal, float)
-    assert math.isnan(actual_output[1].literal)
+    assert actual_output[1] == expected_output[1]
+    assert actual_output[0].type_ == expected_output[0].type_
+    assert actual_output[0].lexeme == expected_output[0].lexeme
+    assert actual_output[0].line == expected_output[0].line
+    assert isinstance(actual_output[0].literal, float)
+    assert math.isnan(actual_output[0].literal)
 
 def test_left_bracket() -> None:
     input_string = "["

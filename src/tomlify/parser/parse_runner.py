@@ -3,16 +3,26 @@ from pathlib import Path
 
 import typer
 
+from tomlify.lexer.exceptions import InvalidCharacterError
 from tomlify.lexer.lexer import Lexer
+from tomlify.parser.exceptions import InvalidFormattingError
 from tomlify.parser.parser import Parser
 
 
 def run(source: str) -> None:
     lexer = Lexer(source)
-    lexer.lex()
+    try:
+        lexer.lex()
+    except InvalidCharacterError as e:
+        typer.echo(e, err=True)
+        raise
     tokens = lexer.get_tokens()
     parser = Parser(tokens)
-    expressions = parser.parse()
+    try:
+        expressions = parser.parse()
+    except InvalidFormattingError as e:
+        typer.echo(e, err=True)
+        raise
     for expression in expressions:
         typer.echo(expression)
 
