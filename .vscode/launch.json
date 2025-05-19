@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "name": "Parse TOML File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/tomlify/parser/parse_runner.py",
+            "args": [
+                "tests/resources/key_value.toml",
+            ],
+            "console": "internalConsole",
+        }
+    ]
+}
