@@ -1,6 +1,6 @@
 [project]
 name = "tomlify"
-version = "0.1.0"
+dynamic = ["version"]  # Remove static version and add this line
 description = "Add your description here"
 readme = "README.md"
 authors = [
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
@@ -28,3 +28,9 @@ exclude = [".venv"]
 
 [tool.ruff.lint]
 ignore = ["D102"]
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
